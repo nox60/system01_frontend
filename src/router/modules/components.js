@@ -19,15 +19,15 @@ const componentsRouter = {
       meta: { title: '工作记录' }
     },
     {
-      path: 'markdown',
-      component: () => import('@/views/mydata/mydata-table'),
-      name: 'MarkdownDemo',
+      path: 'task',
+      component: () => import('@/views/myworks/task-table'),
+      name: 'task',
       meta: { title: '排班安排' }
     },
     {
-      path: 'json-editor',
-      component: () => import('@/views/mydata/mydata-table'),
-      name: 'JsonEditorDemo',
+      path: 'device',
+      component: () => import('@/views/mydata/device'),
+      name: 'device',
       meta: { title: '设备维护' }
     },
     {
