@@ -100,8 +100,8 @@
 </template>
 
 <script>
-  import { addOrUpdateWorkRecord, listWorkRecordData, deleteWorkRecord } from '@/api/work-record'
-  import { listUserData } from '@/api/user'
+import { addOrUpdateWorkRecord, listWorkRecordData, deleteWorkRecord } from '@/api/work-record'
+import { listUserData } from '@/api/user'
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination'
 
@@ -119,7 +119,7 @@ export default {
       total: 0,
       forEdit: 0,
       listLoading: false,
-      usersList:[],
+      usersList: [],
       listQuery: {
         page: 1,
         limit: 20,
@@ -158,7 +158,7 @@ export default {
   },
   methods: {
     getUsers() {
-      listUserData({accountId:-1, page: 1, limit: 100}).then(response => {
+      listUserData({ accountId: -1, page: 1, limit: 100 }).then(response => {
         this.usersList = response.data.dataLists
         setTimeout(() => {
         }, 1.5 * 1000)
@@ -203,7 +203,6 @@ export default {
       } else { // 修改
         console.log('修改数据')
         this.forEdit = 1
-        console.log('row   000000000000  : ',row)
         this.workRecordForm.recordId = row.recordId
       }
       this.$nextTick(() => {
@@ -229,7 +228,6 @@ export default {
         .catch(_ => {})
     },
     handleClose() {
-      console.log('))))))))))))))))))))))  ')
       this.$refs['workRecordForm'].resetFields()
       this.workRecordForm.recordId = 0 // 解决resetFields不能把隐藏字段进行重置的问题
       this.dialogVisible = false
@@ -254,7 +252,7 @@ export default {
         this.dialogVisible = false
         this.reload()
       })
-    },
+    }
   }
 }
 </script>
