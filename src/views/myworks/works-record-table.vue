@@ -42,11 +42,10 @@
       </el-table-column>
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-          <el-button v-if="row.itemStatus=='0'" type="primary" size="mini" @click="handleUpdate(row)">
+          <el-button type="primary" size="mini" @click="handleAddOrEditWorkRecord(row)">
             编辑
           </el-button>
-
-          <el-button v-if="row.itemStatus=='0'" size="mini" type="danger" @click="handleDeleteConfirm(row,$index)">
+          <el-button size="mini" type="danger" @click="handleDeleteConfirm(row,$index)">
             删除
           </el-button>
         </template>
@@ -98,9 +97,7 @@
 <script>
 import { addOrUpdateWorkRecord, listWorkRecordData, deleteWorkRecord } from '@/api/work-record'
 import waves from '@/directive/waves' // waves directive
-import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
-import {addOrUpdateUser, listUserData} from '@/api/user'
 
 const typeValuesArray = [
   { typeValue: 0, typeName: '数据' },
@@ -120,6 +117,7 @@ const statusOptions = [
 ]
 
 export default {
+  inject: ['reload'],
   name: 'ComplexTable',
   components: { Pagination },
   directives: { waves },
@@ -184,7 +182,7 @@ export default {
     },
     initFormData() {
       if (this.forEdit === 1) { // 编辑数据
-        listUserData({ 'page': 1, 'limit': 1, 'recordId': this.workRecordForm.recordId }).then(response => {
+        listWorkRecordData({ 'page': 1, 'limit': 1, 'recordId': this.workRecordForm.recordId }).then(response => {
           setTimeout(() => {
             this.dialogVisible = true
             this.$nextTick(() => {
@@ -209,6 +207,7 @@ export default {
       } else { // 修改
         console.log('修改数据')
         this.forEdit = 1
+        console.log('row   000000000000  : ',row)
         this.workRecordForm.recordId = row.recordId
       }
       this.$nextTick(() => {
@@ -219,8 +218,8 @@ export default {
       this.$confirm('确认删除？')
         .then(_ => {
           console.log('点击了确认')
-          console.log(row['itemId'])
-          deleteWorkRecord(row['itemId']).then(() => {
+          console.log(row['recordId'])
+          deleteWorkRecord(row['recordId']).then(() => {
             this.dialogVisible = false
             this.$notify({
               title: 'Success',
@@ -236,6 +235,7 @@ export default {
     handleClose() {
       this.$refs['workRecordForm'].resetFields()
       this.dialogVisible = false
+      this.listLoading = false
     },
     getSortClass: function(key) {
       const sort = this.listQuery.sort
