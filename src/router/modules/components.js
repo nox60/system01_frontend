@@ -26,25 +26,25 @@ const componentsRouter = {
     },
     {
       path: 'device',
-      component: () => import('@/views/mydata/device'),
+      component: () => import('@/views/myworks/device'),
       name: 'device',
       meta: { title: '设备维护' }
     },
     {
       path: 'split-pane',
-      component: () => import('@/views/mydata/mydata-table'),
+      component: () => import('@/views/myworks/device'),
       name: 'SplitpaneDemo',
       meta: { title: 'FOD管理' }
     },
     {
       path: 'avatar-upload',
-      component: () => import('@/views/mydata/mydata-table'),
+      component: () => import('@/views/myworks/device'),
       name: 'AvatarUploadDemo',
       meta: { title: '步行巡视' }
     },
     {
       path: 'dropzone',
-      component: () => import('@/views/mydata/mydata-table'),
+      component: () => import('@/views/myworks/device'),
       name: 'DropzoneDemo',
       meta: { title: '不停航施工' }
     }
