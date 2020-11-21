@@ -105,23 +105,6 @@
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination'
 
-const typeValuesArray = [
-  { typeValue: 0, typeName: '数据' },
-  { typeValue: 1, typeName: '数据' },
-  { typeValue: 2, typeName: '数据' },
-  { typeValue: 3, typeName: '其他' },
-  { typeValue: 4, typeName: '测试数据1' },
-  { typeValue: 5, typeName: '测试数据2' },
-  { typeValue: 6, typeName: '测试数据3' },
-  { typeValue: 7, typeName: '测试数据4' },
-]
-
-const statusOptions = [
-  { statusValue: 0, statusName: '编辑中' },
-  { statusValue: 1, statusName: '审核中' },
-  { statusValue: 2, statusName: '已发布' }
-]
-
 export default {
   inject: ['reload'],
   name: 'ComplexTable',
@@ -148,7 +131,7 @@ export default {
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       showReviewer: false,
       workRecordForm: {
-        recordId: -1,
+        recordId: 0,
         recordName: '',
         recordBody: '',
         recordAddress: '',
@@ -246,7 +229,9 @@ export default {
         .catch(_ => {})
     },
     handleClose() {
+      console.log('))))))))))))))))))))))  ')
       this.$refs['workRecordForm'].resetFields()
+      this.workRecordForm.recordId = 0 // 解决resetFields不能把隐藏字段进行重置的问题
       this.dialogVisible = false
       this.listLoading = false
     },
