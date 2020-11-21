@@ -84,6 +84,11 @@
             placeholder="记录地址"
           />
         </el-form-item>
+        <el-form-item label="相关责任人" prop="accountId">
+          <el-select v-model="workRecordForm.accountId" style="width: 140px" class="filter-item">
+            <el-option v-for="user in usersList" :key="user.accountId" :label="user.realName" :value="user.accountId" />
+          </el-select>
+        </el-form-item>
 
       </el-form>
       <div style="text-align:right;">
@@ -95,7 +100,8 @@
 </template>
 
 <script>
-import { addOrUpdateWorkRecord, listWorkRecordData, deleteWorkRecord } from '@/api/work-record'
+  import { addOrUpdateWorkRecord, listWorkRecordData, deleteWorkRecord } from '@/api/work-record'
+  import { listUserData } from '@/api/user'
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination'
 
@@ -130,6 +136,7 @@ export default {
       total: 0,
       forEdit: 0,
       listLoading: false,
+      usersList:[],
       listQuery: {
         page: 1,
         limit: 20,
@@ -138,9 +145,6 @@ export default {
         type: undefined,
         sort: '+id'
       },
-      importanceOptions: [1, 2, 3],
-      typeValuesArray,
-      statusOptions,
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       showReviewer: false,
       workRecordForm: {
@@ -148,7 +152,8 @@ export default {
         recordName: '',
         recordBody: '',
         recordAddress: '',
-        roleIds: []
+        roleIds: [],
+        accountId: 2
       },
       dialogStatus: '',
       dialogVisible: false,
@@ -165,9 +170,17 @@ export default {
     }
   },
   created() {
+    this.getUsers()
     this.getList()
   },
   methods: {
+    getUsers() {
+      listUserData({accountId:-1, page: 1, limit: 100}).then(response => {
+        this.usersList = response.data.dataLists
+        setTimeout(() => {
+        }, 1.5 * 1000)
+      })
+    },
     getList() {
       this.listLoading = true
       listWorkRecordData(this.listQuery).then(response => {
