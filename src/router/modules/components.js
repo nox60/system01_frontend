@@ -34,7 +34,7 @@ const componentsRouter = {
       path: 'split-pane',
       component: () => import('@/views/myworks/device'),
       name: 'SplitpaneDemo',
-      meta: { title: 'FOD管理' }
+      meta: { title: 'FOD外来物管理' }
     },
     {
       path: 'avatar-upload',

@@ -103,10 +103,8 @@
           <el-date-picker v-model="DeviceForm.deviceTime" type="datetime" placeholder="选择时间" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm"></el-date-picker>
         </el-form-item>
         <el-form-item label="设备评级" prop="level">
-          <el-rate v-model="DeviceForm.level" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
+          <el-rate v-model="DeviceForm.level" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="5" style="margin-top:8px;" />
         </el-form-item>
-
-
 
       </el-form>
       <div style="text-align:right;">
