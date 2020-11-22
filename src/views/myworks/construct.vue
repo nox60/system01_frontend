@@ -107,161 +107,161 @@
 </template>
 
 <script>
-  import { addOrUpdateConstruct, listConstructData, deleteConstruct } from '@/api/construct'
-  import { listUserData } from '@/api/user'
-  import waves from '@/directive/waves' // waves directive
-  import Pagination from '@/components/Pagination'
+import { addOrUpdateConstruct, listConstructData, deleteConstruct } from '@/api/construct'
+import { listUserData } from '@/api/user'
+import waves from '@/directive/waves' // waves directive
+import Pagination from '@/components/Pagination'
 
-  export default {
-    inject: ['reload'],
-    name: 'ComplexTable',
-    components: { Pagination },
-    directives: { waves },
-    filters: {
+export default {
+  inject: ['reload'],
+  name: 'ComplexTable',
+  components: { Pagination },
+  directives: { waves },
+  filters: {
+  },
+  data() {
+    return {
+      tableKey: 0,
+      list: null,
+      total: 0,
+      forEdit: 0,
+      listLoading: false,
+      usersList: [],
+      listQuery: {
+        page: 1,
+        limit: 20,
+        importance: undefined,
+        title: undefined,
+        type: undefined,
+        sort: '+id'
+      },
+      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
+      showReviewer: false,
+      ConstructForm: {
+        constructId: 0,
+        constructName: '',
+        constructBody: '',
+        constructAddress: '',
+        roleIds: [],
+        accountId: 2,
+        level: 0,
+        constructTime: ''
+      },
+      dialogStatus: '',
+      dialogVisible: false,
+      textMap: {
+        update: 'Edit',
+        create: 'Create'
+      },
+      rules: {
+        type: [{ required: true, message: 'type is required', trigger: 'change' }],
+        timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
+        title: [{ required: true, message: 'title is required', trigger: 'blur' }]
+      },
+      downloadLoading: false
+    }
+  },
+  created() {
+    this.getUsers()
+    this.getList()
+  },
+  methods: {
+    getUsers() {
+      listUserData({ accountId: -1, page: 1, limit: 100 }).then(response => {
+        this.usersList = response.data.dataLists
+        setTimeout(() => {
+        }, 1.5 * 1000)
+      })
     },
-    data() {
-      return {
-        tableKey: 0,
-        list: null,
-        total: 0,
-        forEdit: 0,
-        listLoading: false,
-        usersList: [],
-        listQuery: {
-          page: 1,
-          limit: 20,
-          importance: undefined,
-          title: undefined,
-          type: undefined,
-          sort: '+id'
-        },
-        sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-        showReviewer: false,
-        ConstructForm: {
-          constructId: 0,
-          constructName: '',
-          constructBody: '',
-          constructAddress: '',
-          roleIds: [],
-          accountId: 2,
-          level: 0,
-          constructTime: ''
-        },
-        dialogStatus: '',
-        dialogVisible: false,
-        textMap: {
-          update: 'Edit',
-          create: 'Create'
-        },
-        rules: {
-          type: [{ required: true, message: 'type is required', trigger: 'change' }],
-          timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-          title: [{ required: true, message: 'title is required', trigger: 'blur' }]
-        },
-        downloadLoading: false
-      }
-    },
-    created() {
-      this.getUsers()
-      this.getList()
-    },
-    methods: {
-      getUsers() {
-        listUserData({ accountId: -1, page: 1, limit: 100 }).then(response => {
-          this.usersList = response.data.dataLists
-          setTimeout(() => {
-          }, 1.5 * 1000)
-        })
-      },
-      getList() {
-        this.listLoading = true
-        listConstructData(this.listQuery).then(response => {
-          this.list = response.data.dataLists
-          this.total = response.data.totalCounts
-          console.log(this.list)
-          // Just to simulate the time of the request
-          setTimeout(() => {
-            this.listLoading = false
-          }, 1.5 * 1000)
-        })
-      },
-      initFormData() {
-        if (this.forEdit === 1) { // 编辑数据
-          listConstructData({ 'page': 1, 'limit': 1, 'constructId': this.ConstructForm.constructId }).then(response => {
-            setTimeout(() => {
-              this.dialogVisible = true
-              this.$nextTick(() => {
-                this.$refs['ConstructForm'].resetFields()
-                this.ConstructForm = response.data.dataLists[0]
-                this.listLoading = false
-              })
-            }, 1000)
-          })
-        } else {
-          this.dialogVisible = true
-          this.$nextTick(() => {
-            this.$refs['ConstructForm'].resetFields()
-          })
-        }
-      },
-      handleAddOrEditConstruct(row) {
-        this.listLoading = true
-        if (row.constructId === 0) { // 新增
-          console.log('新增数据')
-          this.forEdit = 0
-        } else { // 修改
-          console.log('修改数据')
-          this.forEdit = 1
-          this.ConstructForm.constructId = row.constructId
-        }
-        this.$nextTick(() => {
-          this.initFormData()
-        })
-      },
-      handleDeleteConfirm(row) {
-        this.$confirm('确认删除？')
-          .then(_ => {
-            console.log('点击了确认')
-            console.log(row['constructId'])
-            deleteConstruct(row['constructId']).then(() => {
-              this.dialogVisible = false
-              this.$notify({
-                title: 'Success',
-                message: '删除数据成功！',
-                type: 'success',
-                duration: 2000
-              })
-              this.getList()
-            })
-          })
-          .catch(_ => {})
-      },
-      handleClose() {
-        this.$refs['ConstructForm'].resetFields()
-        this.ConstructForm.constructId = 0 // 解决resetFields不能把隐藏字段进行重置的问题
-        this.dialogVisible = false
-        this.listLoading = false
-      },
-      getSortClass: function(key) {
-        const sort = this.listQuery.sort
-        return sort === `+${key}` ? 'ascending' : 'descending'
-      },
-      confirmAddOrUpdateConstruct() {
-        this.listLoading = true
-        console.log(this.ConstructForm)
-        addOrUpdateConstruct(this.ConstructForm).then(() => {
-          this.$notify({
-            title: 'Success',
-            message: '操作成功',
-            type: 'success',
-            duration: 2000
-          })
-          this.$refs['ConstructForm'].resetFields()
+    getList() {
+      this.listLoading = true
+      listConstructData(this.listQuery).then(response => {
+        this.list = response.data.dataLists
+        this.total = response.data.totalCounts
+        console.log(this.list)
+        // Just to simulate the time of the request
+        setTimeout(() => {
           this.listLoading = false
-          this.dialogVisible = false
-          this.reload()
+        }, 1.5 * 1000)
+      })
+    },
+    initFormData() {
+      if (this.forEdit === 1) { // 编辑数据
+        listConstructData({ 'page': 1, 'limit': 1, 'constructId': this.ConstructForm.constructId }).then(response => {
+          setTimeout(() => {
+            this.dialogVisible = true
+            this.$nextTick(() => {
+              this.$refs['ConstructForm'].resetFields()
+              this.ConstructForm = response.data.dataLists[0]
+              this.listLoading = false
+            })
+          }, 1000)
+        })
+      } else {
+        this.dialogVisible = true
+        this.$nextTick(() => {
+          this.$refs['ConstructForm'].resetFields()
         })
       }
+    },
+    handleAddOrEditConstruct(row) {
+      this.listLoading = true
+      if (row.constructId === 0) { // 新增
+        console.log('新增数据')
+        this.forEdit = 0
+      } else { // 修改
+        console.log('修改数据')
+        this.forEdit = 1
+        this.ConstructForm.constructId = row.constructId
+      }
+      this.$nextTick(() => {
+        this.initFormData()
+      })
+    },
+    handleDeleteConfirm(row) {
+      this.$confirm('确认删除？')
+        .then(_ => {
+          console.log('点击了确认')
+          console.log(row['constructId'])
+          deleteConstruct(row['constructId']).then(() => {
+            this.dialogVisible = false
+            this.$notify({
+              title: 'Success',
+              message: '删除数据成功！',
+              type: 'success',
+              duration: 2000
+            })
+            this.getList()
+          })
+        })
+        .catch(_ => {})
+    },
+    handleClose() {
+      this.$refs['ConstructForm'].resetFields()
+      this.ConstructForm.constructId = 0 // 解决resetFields不能把隐藏字段进行重置的问题
+      this.dialogVisible = false
+      this.listLoading = false
+    },
+    getSortClass: function(key) {
+      const sort = this.listQuery.sort
+      return sort === `+${key}` ? 'ascending' : 'descending'
+    },
+    confirmAddOrUpdateConstruct() {
+      this.listLoading = true
+      console.log(this.ConstructForm)
+      addOrUpdateConstruct(this.ConstructForm).then(() => {
+        this.$notify({
+          title: 'Success',
+          message: '操作成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.$refs['ConstructForm'].resetFields()
+        this.listLoading = false
+        this.dialogVisible = false
+        this.reload()
+      })
     }
   }
+}
 </script>
