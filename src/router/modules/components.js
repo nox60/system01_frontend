@@ -37,15 +37,15 @@ const componentsRouter = {
       meta: { title: 'FOD外来物管理' }
     },
     {
-      path: 'avatar-upload',
-      component: () => import('@/views/myworks/device'),
-      name: 'AvatarUploadDemo',
+      path: 'patrol',
+      component: () => import('@/views/myworks/patrol'),
+      name: 'patrol',
       meta: { title: '步行巡视' }
     },
     {
-      path: 'dropzone',
-      component: () => import('@/views/myworks/device'),
-      name: 'DropzoneDemo',
+      path: 'construct',
+      component: () => import('@/views/myworks/construct'),
+      name: 'construct',
       meta: { title: '不停航施工' }
     }
   ]

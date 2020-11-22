@@ -1,0 +1,267 @@
+<template>
+  <div class="app-container">
+    <div class="filter-container">
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleAddOrEditConstruct({ constructId: 0})">
+        新建不停航施工计划
+      </el-button>
+    </div>
+
+    <el-table
+      :key="tableKey"
+      v-loading="listLoading"
+      :data="list"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%;"
+    >
+      <el-table-column label="施工编号" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+        <template slot-scope="{row}">
+          <span>{{ row.constructId }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="记录时间" width="150px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.createTime | parseTime('{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="工程名称" min-width="150px">
+        <template slot-scope="{row}">
+          <span>{{ row.constructName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="施工地址" min-width="150px">
+        <template slot-scope="{row}">
+          <span>{{ row.constructAddress }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="详细描述" min-width="150px">
+        <template slot-scope="{row}">
+          <span>{{ row.constructBody }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="计划时间" min-width="150px">
+        <template slot-scope="{row}">
+          <span>{{ row.constructTime }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
+        <template slot-scope="{row,$index}">
+          <el-button type="primary" size="mini" @click="handleAddOrEditConstruct(row)">
+            编辑
+          </el-button>
+          <el-button size="mini" type="danger" @click="handleDeleteConfirm(row,$index)">
+            删除
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <el-dialog
+      :title="forEdit==='1'?'编辑施工计划':'添加施工计划'"
+      :visible.sync="dialogVisible"
+      @close="handleClose"
+    >
+      <el-form
+        v-if="dialogVisible"
+        ref="ConstructForm"
+        :model="ConstructForm"
+        :modal-append-to-body="true"
+        label-width="100px"
+        label-position="left"
+      >
+        <el-form-item label="施工计划名" prop="constructName">
+          <el-input
+            v-model="ConstructForm.constructName"
+            placeholder="施工计划名"
+          />
+        </el-form-item>
+        <el-form-item label="施工计划描述" prop="constructBody">
+          <el-input
+            v-model="ConstructForm.constructBody"
+            placeholder="施工计划描述"
+          />
+        </el-form-item>
+        <el-form-item label="施工地址" prop="constructAddress">
+          <el-input
+            v-model="ConstructForm.constructAddress"
+            placeholder="施工计划地址"
+          />
+        </el-form-item>
+        <el-form-item label="负责人" prop="accountId">
+          <el-select v-model="ConstructForm.accountId" style="width: 140px" class="filter-item">
+            <el-option v-for="user in usersList" :key="user.accountId" :label="user.realName" :value="user.accountId" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="施工时间" prop="constructTime">
+          <el-date-picker v-model="ConstructForm.constructTime" type="datetime" placeholder="选择时间" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" />
+        </el-form-item>
+      </el-form>
+      <div style="text-align:right;">
+        <el-button type="danger" @click="handleClose">取消</el-button>
+        <el-button type="primary" @click="confirmAddOrUpdateConstruct">确认</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+  import { addOrUpdateConstruct, listConstructData, deleteConstruct } from '@/api/construct'
+  import { listUserData } from '@/api/user'
+  import waves from '@/directive/waves' // waves directive
+  import Pagination from '@/components/Pagination'
+
+  export default {
+    inject: ['reload'],
+    name: 'ComplexTable',
+    components: { Pagination },
+    directives: { waves },
+    filters: {
+    },
+    data() {
+      return {
+        tableKey: 0,
+        list: null,
+        total: 0,
+        forEdit: 0,
+        listLoading: false,
+        usersList: [],
+        listQuery: {
+          page: 1,
+          limit: 20,
+          importance: undefined,
+          title: undefined,
+          type: undefined,
+          sort: '+id'
+        },
+        sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
+        showReviewer: false,
+        ConstructForm: {
+          constructId: 0,
+          constructName: '',
+          constructBody: '',
+          constructAddress: '',
+          roleIds: [],
+          accountId: 2,
+          level: 0,
+          constructTime: ''
+        },
+        dialogStatus: '',
+        dialogVisible: false,
+        textMap: {
+          update: 'Edit',
+          create: 'Create'
+        },
+        rules: {
+          type: [{ required: true, message: 'type is required', trigger: 'change' }],
+          timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
+          title: [{ required: true, message: 'title is required', trigger: 'blur' }]
+        },
+        downloadLoading: false
+      }
+    },
+    created() {
+      this.getUsers()
+      this.getList()
+    },
+    methods: {
+      getUsers() {
+        listUserData({ accountId: -1, page: 1, limit: 100 }).then(response => {
+          this.usersList = response.data.dataLists
+          setTimeout(() => {
+          }, 1.5 * 1000)
+        })
+      },
+      getList() {
+        this.listLoading = true
+        listConstructData(this.listQuery).then(response => {
+          this.list = response.data.dataLists
+          this.total = response.data.totalCounts
+          console.log(this.list)
+          // Just to simulate the time of the request
+          setTimeout(() => {
+            this.listLoading = false
+          }, 1.5 * 1000)
+        })
+      },
+      initFormData() {
+        if (this.forEdit === 1) { // 编辑数据
+          listConstructData({ 'page': 1, 'limit': 1, 'constructId': this.ConstructForm.constructId }).then(response => {
+            setTimeout(() => {
+              this.dialogVisible = true
+              this.$nextTick(() => {
+                this.$refs['ConstructForm'].resetFields()
+                this.ConstructForm = response.data.dataLists[0]
+                this.listLoading = false
+              })
+            }, 1000)
+          })
+        } else {
+          this.dialogVisible = true
+          this.$nextTick(() => {
+            this.$refs['ConstructForm'].resetFields()
+          })
+        }
+      },
+      handleAddOrEditConstruct(row) {
+        this.listLoading = true
+        if (row.constructId === 0) { // 新增
+          console.log('新增数据')
+          this.forEdit = 0
+        } else { // 修改
+          console.log('修改数据')
+          this.forEdit = 1
+          this.ConstructForm.constructId = row.constructId
+        }
+        this.$nextTick(() => {
+          this.initFormData()
+        })
+      },
+      handleDeleteConfirm(row) {
+        this.$confirm('确认删除？')
+          .then(_ => {
+            console.log('点击了确认')
+            console.log(row['constructId'])
+            deleteConstruct(row['constructId']).then(() => {
+              this.dialogVisible = false
+              this.$notify({
+                title: 'Success',
+                message: '删除数据成功！',
+                type: 'success',
+                duration: 2000
+              })
+              this.getList()
+            })
+          })
+          .catch(_ => {})
+      },
+      handleClose() {
+        this.$refs['ConstructForm'].resetFields()
+        this.ConstructForm.constructId = 0 // 解决resetFields不能把隐藏字段进行重置的问题
+        this.dialogVisible = false
+        this.listLoading = false
+      },
+      getSortClass: function(key) {
+        const sort = this.listQuery.sort
+        return sort === `+${key}` ? 'ascending' : 'descending'
+      },
+      confirmAddOrUpdateConstruct() {
+        this.listLoading = true
+        console.log(this.ConstructForm)
+        addOrUpdateConstruct(this.ConstructForm).then(() => {
+          this.$notify({
+            title: 'Success',
+            message: '操作成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.$refs['ConstructForm'].resetFields()
+          this.listLoading = false
+          this.dialogVisible = false
+          this.reload()
+        })
+      }
+    }
+  }
+</script>
