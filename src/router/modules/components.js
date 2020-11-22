@@ -31,9 +31,9 @@ const componentsRouter = {
       meta: { title: '设备维护' }
     },
     {
-      path: 'split-pane',
-      component: () => import('@/views/myworks/device'),
-      name: 'SplitpaneDemo',
+      path: 'fod',
+      component: () => import('@/views/myworks/fod'),
+      name: 'fod',
       meta: { title: 'FOD外来物管理' }
     },
     {

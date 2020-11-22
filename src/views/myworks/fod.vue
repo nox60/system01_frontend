@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleAddOrEditTask({ taskId: 0})">
-        新建排班
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleAddOrEditFod({ fodId: 0})">
+        新建外来物
       </el-button>
     </div>
 
@@ -15,39 +15,44 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column label="排班编号" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+      <el-table-column label="外来物编号" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
-          <span>{{ row.taskId }}</span>
+          <span>{{ row.fodId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="排班时间" width="150px" align="center">
+      <el-table-column label="捕获时间" width="150px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.createTime | parseTime('{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="标题" min-width="150px">
+      <el-table-column label="外来物名称" min-width="150px">
         <template slot-scope="{row}">
-          <span>{{ row.taskName }}</span>
+          <span>{{ row.fodName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="排班地址" min-width="150px">
+      <el-table-column label="捕获地址" min-width="150px">
         <template slot-scope="{row}">
-          <span>{{ row.taskAddress }}</span>
+          <span>{{ row.fodAddress }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="排班内容" min-width="150px">
+      <el-table-column label="详细描述" min-width="150px">
         <template slot-scope="{row}">
-          <span>{{ row.taskBody }}</span>
+          <span>{{ row.fodBody }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="排班时间" min-width="150px">
+      <el-table-column label="危险评级" min-width="150px">
         <template slot-scope="{row}">
-          <span>{{ row.taskTime }}</span>
+          <el-rate v-model="row.level" :allow-half="true" disabled text-color="#ff9900" />
         </template>
       </el-table-column>
-      <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+      <el-table-column label="捕获时间" min-width="150px">
+        <template slot-scope="{row}">
+          <span>{{ row.fodTime }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleAddOrEditTask(row)">
+          <el-button type="primary" size="mini" @click="handleAddOrEditFod(row)">
             编辑
           </el-button>
           <el-button size="mini" type="danger" @click="handleDeleteConfirm(row,$index)">
@@ -59,55 +64,59 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
     <el-dialog
-      :title="forEdit==='1'?'编辑排班':'添加排班'"
+      :title="forEdit==='1'?'编辑外来物':'添加外来物'"
       :visible.sync="dialogVisible"
       @close="handleClose"
     >
       <el-form
         v-if="dialogVisible"
-        ref="TaskForm"
-        :model="TaskForm"
+        ref="FodForm"
+        :model="FodForm"
         :modal-append-to-body="true"
         label-width="100px"
         label-position="left"
       >
-        <el-form-item label="排班名" prop="taskName">
+        <el-form-item label="外来物名" prop="fodName">
           <el-input
-            v-model="TaskForm.taskName"
-            placeholder="排班名"
+            v-model="FodForm.fodName"
+            placeholder="外来物名"
           />
         </el-form-item>
-        <el-form-item label="排班描述" prop="taskBody">
+        <el-form-item label="外来物描述" prop="fodBody">
           <el-input
-            v-model="TaskForm.taskBody"
-            placeholder="排班描述"
+            v-model="FodForm.fodBody"
+            placeholder="外来物描述"
           />
         </el-form-item>
-        <el-form-item label="排班地址" prop="taskAddress">
+        <el-form-item label="捕获地址" prop="fodAddress">
           <el-input
-            v-model="TaskForm.taskAddress"
-            placeholder="排班地址"
+            v-model="FodForm.fodAddress"
+            placeholder="外来物地址"
           />
         </el-form-item>
-        <el-form-item label="相关责任人" prop="accountId">
-          <el-select v-model="TaskForm.accountId" style="width: 140px" class="filter-item">
+        <el-form-item label="捕获者" prop="accountId">
+          <el-select v-model="FodForm.accountId" style="width: 140px" class="filter-item">
             <el-option v-for="user in usersList" :key="user.accountId" :label="user.realName" :value="user.accountId" />
           </el-select>
         </el-form-item>
-        <el-form-item label="排班时间" prop="taskTime">
-          <el-date-picker v-model="TaskForm.taskTime" type="datetime" placeholder="选择时间" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" />
+        <el-form-item label="捕获时间" prop="fodTime">
+          <el-date-picker v-model="FodForm.fodTime" type="datetime" placeholder="选择时间" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" />
         </el-form-item>
+        <el-form-item label="危险评级" prop="level">
+          <el-rate v-model="FodForm.level" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="5" style="margin-top:8px;" />
+        </el-form-item>
+
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="handleClose">取消</el-button>
-        <el-button type="primary" @click="confirmAddOrUpdateTask">确认</el-button>
+        <el-button type="primary" @click="confirmAddOrUpdateFod">确认</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { addOrUpdateTask, listTaskData, deleteTask } from '@/api/task'
+import { addOrUpdateFod, listFodData, deleteFod } from '@/api/fod'
 import { listUserData } from '@/api/user'
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination'
@@ -137,14 +146,15 @@ export default {
       },
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       showReviewer: false,
-      TaskForm: {
-        taskId: 0,
-        taskName: '',
-        taskBody: '',
-        taskAddress: '',
+      FodForm: {
+        fodId: 0,
+        fodName: '',
+        fodBody: '',
+        fodAddress: '',
         roleIds: [],
         accountId: 2,
-        taskTime: ''
+        level: 0,
+        fodTime: ''
       },
       dialogStatus: '',
       dialogVisible: false,
@@ -174,7 +184,7 @@ export default {
     },
     getList() {
       this.listLoading = true
-      listTaskData(this.listQuery).then(response => {
+      listFodData(this.listQuery).then(response => {
         this.list = response.data.dataLists
         this.total = response.data.totalCounts
         console.log(this.list)
@@ -186,12 +196,12 @@ export default {
     },
     initFormData() {
       if (this.forEdit === 1) { // 编辑数据
-        listTaskData({ 'page': 1, 'limit': 1, 'taskId': this.TaskForm.taskId }).then(response => {
+        listFodData({ 'page': 1, 'limit': 1, 'fodId': this.FodForm.fodId }).then(response => {
           setTimeout(() => {
             this.dialogVisible = true
             this.$nextTick(() => {
-              this.$refs['TaskForm'].resetFields()
-              this.TaskForm = response.data.dataLists[0]
+              this.$refs['FodForm'].resetFields()
+              this.FodForm = response.data.dataLists[0]
               this.listLoading = false
             })
           }, 1000)
@@ -199,19 +209,19 @@ export default {
       } else {
         this.dialogVisible = true
         this.$nextTick(() => {
-          this.$refs['TaskForm'].resetFields()
+          this.$refs['FodForm'].resetFields()
         })
       }
     },
-    handleAddOrEditTask(row) {
+    handleAddOrEditFod(row) {
       this.listLoading = true
-      if (row.taskId === 0) { // 新增
+      if (row.fodId === 0) { // 新增
         console.log('新增数据')
         this.forEdit = 0
       } else { // 修改
         console.log('修改数据')
         this.forEdit = 1
-        this.TaskForm.taskId = row.taskId
+        this.FodForm.fodId = row.fodId
       }
       this.$nextTick(() => {
         this.initFormData()
@@ -221,8 +231,8 @@ export default {
       this.$confirm('确认删除？')
         .then(_ => {
           console.log('点击了确认')
-          console.log(row['taskId'])
-          deleteTask(row['taskId']).then(() => {
+          console.log(row['fodId'])
+          deleteFod(row['fodId']).then(() => {
             this.dialogVisible = false
             this.$notify({
               title: 'Success',
@@ -236,8 +246,8 @@ export default {
         .catch(_ => {})
     },
     handleClose() {
-      this.$refs['TaskForm'].resetFields()
-      this.TaskForm.taskId = 0 // 解决resetFields不能把隐藏字段进行重置的问题
+      this.$refs['FodForm'].resetFields()
+      this.FodForm.fodId = 0 // 解决resetFields不能把隐藏字段进行重置的问题
       this.dialogVisible = false
       this.listLoading = false
     },
@@ -245,17 +255,17 @@ export default {
       const sort = this.listQuery.sort
       return sort === `+${key}` ? 'ascending' : 'descending'
     },
-    confirmAddOrUpdateTask() {
+    confirmAddOrUpdateFod() {
       this.listLoading = true
-      console.log(this.TaskForm)
-      addOrUpdateTask(this.TaskForm).then(() => {
+      console.log(this.FodForm)
+      addOrUpdateFod(this.FodForm).then(() => {
         this.$notify({
           title: 'Success',
           message: '操作成功',
           type: 'success',
           duration: 2000
         })
-        this.$refs['TaskForm'].resetFields()
+        this.$refs['FodForm'].resetFields()
         this.listLoading = false
         this.dialogVisible = false
         this.reload()
