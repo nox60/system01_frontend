@@ -15,7 +15,7 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column label="设备编号" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+      <el-table-column label="设备编号" prop="id" align="center" width="80">
         <template slot-scope="{row}">
           <span>{{ row.deviceId }}</span>
         </template>
@@ -41,8 +41,8 @@
         </template>
       </el-table-column>
       <el-table-column label="设备评级" min-width="150px">
-        <template slot-scope="{row}" >
-          <el-rate v-model="row.level" :allow-half="true"  disabled text-color="#ff9900"></el-rate>
+        <template slot-scope="{row}">
+          <el-rate v-model="row.level" :allow-half="true" disabled text-color="#ff9900" />
         </template>
       </el-table-column>
       <el-table-column label="维护时间" min-width="150px">
@@ -50,7 +50,7 @@
           <span>{{ row.deviceTime }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleAddOrEditDevice(row)">
             编辑
@@ -73,6 +73,7 @@
         ref="DeviceForm"
         :model="DeviceForm"
         :modal-append-to-body="true"
+        :rules="rules"
         label-width="100px"
         label-position="left"
       >
@@ -80,18 +81,21 @@
           <el-input
             v-model="DeviceForm.deviceName"
             placeholder="设备名"
+            maxlength="30"
           />
         </el-form-item>
         <el-form-item label="设备描述" prop="deviceBody">
           <el-input
             v-model="DeviceForm.deviceBody"
             placeholder="设备描述"
+            maxlength="200"
           />
         </el-form-item>
         <el-form-item label="设备地址" prop="deviceAddress">
           <el-input
             v-model="DeviceForm.deviceAddress"
             placeholder="设备地址"
+            maxlength="100"
           />
         </el-form-item>
         <el-form-item label="相关责任人" prop="accountId">
@@ -100,7 +104,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="设备时间" prop="deviceTime">
-          <el-date-picker v-model="DeviceForm.deviceTime" type="datetime" placeholder="选择时间" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm"></el-date-picker>
+          <el-date-picker v-model="DeviceForm.deviceTime" type="datetime" placeholder="选择时间" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm"/>
         </el-form-item>
         <el-form-item label="设备评级" prop="level">
           <el-rate v-model="DeviceForm.level" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="5" style="margin-top:8px;" />
@@ -116,161 +120,163 @@
 </template>
 
 <script>
-  import { addOrUpdateDevice, listDeviceData, deleteDevice } from '@/api/device'
-  import { listUserData } from '@/api/user'
-  import waves from '@/directive/waves' // waves directive
-  import Pagination from '@/components/Pagination'
+import { addOrUpdateDevice, listDeviceData, deleteDevice } from '@/api/device'
+import { listUserData } from '@/api/user'
+import waves from '@/directive/waves' // waves directive
+import Pagination from '@/components/Pagination'
 
-  export default {
-    inject: ['reload'],
-    name: 'ComplexTable',
-    components: { Pagination },
-    directives: { waves },
-    filters: {
+export default {
+  inject: ['reload'],
+  name: 'ComplexTable',
+  components: { Pagination },
+  directives: { waves },
+  filters: {
+  },
+  data() {
+    return {
+      tableKey: 0,
+      list: null,
+      total: 0,
+      forEdit: 0,
+      listLoading: false,
+      usersList: [],
+      listQuery: {
+        page: 1,
+        limit: 20,
+        importance: undefined,
+        title: undefined,
+        type: undefined,
+        sort: '+id'
+      },
+      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
+      showReviewer: false,
+      DeviceForm: {
+        deviceId: 0,
+        deviceName: '',
+        deviceBody: '',
+        deviceAddress: '',
+        roleIds: [],
+        accountId: 2,
+        level: 0,
+        deviceTime: ''
+      },
+      dialogStatus: '',
+      dialogVisible: false,
+      textMap: {
+        update: 'Edit',
+        create: 'Create'
+      },
+      rules: {
+        deviceName: [{ required: true, message: '设备名称不能为空！', trigger: 'blur' }]
+      },
+      downloadLoading: false
+    }
+  },
+  created() {
+    this.getUsers()
+    this.getList()
+  },
+  methods: {
+    getUsers() {
+      listUserData({ accountId: -1, page: 1, limit: 100 }).then(response => {
+        this.usersList = response.data.dataLists
+        setTimeout(() => {
+        }, 1.5 * 1000)
+      })
     },
-    data() {
-      return {
-        tableKey: 0,
-        list: null,
-        total: 0,
-        forEdit: 0,
-        listLoading: false,
-        usersList: [],
-        listQuery: {
-          page: 1,
-          limit: 20,
-          importance: undefined,
-          title: undefined,
-          type: undefined,
-          sort: '+id'
-        },
-        sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-        showReviewer: false,
-        DeviceForm: {
-          deviceId: 0,
-          deviceName: '',
-          deviceBody: '',
-          deviceAddress: '',
-          roleIds: [],
-          accountId: 2,
-          level: 0,
-          deviceTime:''
-        },
-        dialogStatus: '',
-        dialogVisible: false,
-        textMap: {
-          update: 'Edit',
-          create: 'Create'
-        },
-        rules: {
-          type: [{ required: true, message: 'type is required', trigger: 'change' }],
-          timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-          title: [{ required: true, message: 'title is required', trigger: 'blur' }]
-        },
-        downloadLoading: false
-      }
-    },
-    created() {
-      this.getUsers()
-      this.getList()
-    },
-    methods: {
-      getUsers() {
-        listUserData({ accountId: -1, page: 1, limit: 100 }).then(response => {
-          this.usersList = response.data.dataLists
-          setTimeout(() => {
-          }, 1.5 * 1000)
-        })
-      },
-      getList() {
-        this.listLoading = true
-        listDeviceData(this.listQuery).then(response => {
-          this.list = response.data.dataLists
-          this.total = response.data.totalCounts
-          console.log(this.list)
-          // Just to simulate the time of the request
-          setTimeout(() => {
-            this.listLoading = false
-          }, 1.5 * 1000)
-        })
-      },
-      initFormData() {
-        if (this.forEdit === 1) { // 编辑数据
-          listDeviceData({ 'page': 1, 'limit': 1, 'deviceId': this.DeviceForm.deviceId }).then(response => {
-            setTimeout(() => {
-              this.dialogVisible = true
-              this.$nextTick(() => {
-                this.$refs['DeviceForm'].resetFields()
-                this.DeviceForm = response.data.dataLists[0]
-                this.listLoading = false
-              })
-            }, 1000)
-          })
-        } else {
-          this.dialogVisible = true
-          this.$nextTick(() => {
-            this.$refs['DeviceForm'].resetFields()
-          })
-        }
-      },
-      handleAddOrEditDevice(row) {
-        this.listLoading = true
-        if (row.deviceId === 0) { // 新增
-          console.log('新增数据')
-          this.forEdit = 0
-        } else { // 修改
-          console.log('修改数据')
-          this.forEdit = 1
-          this.DeviceForm.deviceId = row.deviceId
-        }
-        this.$nextTick(() => {
-          this.initFormData()
-        })
-      },
-      handleDeleteConfirm(row) {
-        this.$confirm('确认删除？')
-          .then(_ => {
-            console.log('点击了确认')
-            console.log(row['deviceId'])
-            deleteDevice(row['deviceId']).then(() => {
-              this.dialogVisible = false
-              this.$notify({
-                title: 'Success',
-                message: '删除数据成功！',
-                type: 'success',
-                duration: 2000
-              })
-              this.getList()
-            })
-          })
-          .catch(_ => {})
-      },
-      handleClose() {
-        this.$refs['DeviceForm'].resetFields()
-        this.DeviceForm.deviceId = 0 // 解决resetFields不能把隐藏字段进行重置的问题
-        this.dialogVisible = false
-        this.listLoading = false
-      },
-      getSortClass: function(key) {
-        const sort = this.listQuery.sort
-        return sort === `+${key}` ? 'ascending' : 'descending'
-      },
-      confirmAddOrUpdateDevice() {
-        this.listLoading = true
-        console.log(this.DeviceForm)
-        addOrUpdateDevice(this.DeviceForm).then(() => {
-          this.$notify({
-            title: 'Success',
-            message: '操作成功',
-            type: 'success',
-            duration: 2000
-          })
-          this.$refs['DeviceForm'].resetFields()
+    getList() {
+      this.listLoading = true
+      listDeviceData(this.listQuery).then(response => {
+        this.list = response.data.dataLists
+        this.total = response.data.totalCounts
+        console.log(this.list)
+        // Just to simulate the time of the request
+        setTimeout(() => {
           this.listLoading = false
-          this.dialogVisible = false
-          this.reload()
+        }, 1.5 * 1000)
+      })
+    },
+    initFormData() {
+      if (this.forEdit === 1) { // 编辑数据
+        listDeviceData({ 'page': 1, 'limit': 1, 'deviceId': this.DeviceForm.deviceId }).then(response => {
+          setTimeout(() => {
+            this.dialogVisible = true
+            this.$nextTick(() => {
+              this.$refs['DeviceForm'].resetFields()
+              this.DeviceForm = response.data.dataLists[0]
+              this.listLoading = false
+            })
+          }, 1000)
+        })
+      } else {
+        this.dialogVisible = true
+        this.$nextTick(() => {
+          this.$refs['DeviceForm'].resetFields()
         })
       }
+    },
+    handleAddOrEditDevice(row) {
+      this.listLoading = true
+      if (row.deviceId === 0) { // 新增
+        console.log('新增数据')
+        this.forEdit = 0
+      } else { // 修改
+        console.log('修改数据')
+        this.forEdit = 1
+        this.DeviceForm.deviceId = row.deviceId
+      }
+      this.$nextTick(() => {
+        this.initFormData()
+      })
+    },
+    handleDeleteConfirm(row) {
+      this.$confirm('确认删除？')
+        .then(_ => {
+          console.log('点击了确认')
+          console.log(row['deviceId'])
+          deleteDevice(row['deviceId']).then(() => {
+            this.dialogVisible = false
+            this.$notify({
+              title: 'Success',
+              message: '删除数据成功！',
+              type: 'success',
+              duration: 2000
+            })
+            this.getList()
+          })
+        })
+        .catch(_ => {})
+    },
+    handleClose() {
+      this.$refs['DeviceForm'].resetFields()
+      this.DeviceForm.deviceId = 0 // 解决resetFields不能把隐藏字段进行重置的问题
+      this.dialogVisible = false
+      this.listLoading = false
+    },
+    getSortClass: function(key) {
+      const sort = this.listQuery.sort
+      return sort === `+${key}` ? 'ascending' : 'descending'
+    },
+    confirmAddOrUpdateDevice() {
+      this.$refs['DeviceForm'].validate((valid) => {
+        if (valid) {
+          this.listLoading = true
+          console.log(this.DeviceForm)
+          addOrUpdateDevice(this.DeviceForm).then(() => {
+            this.$notify({
+              title: 'Success',
+              message: '操作成功',
+              type: 'success',
+              duration: 2000
+            })
+            this.$refs['DeviceForm'].resetFields()
+            this.listLoading = false
+            this.dialogVisible = false
+            this.reload()
+          })
+        }
+      })
     }
   }
+}
 </script>
