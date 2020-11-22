@@ -31,19 +31,19 @@ const tableRouter = {
       meta: { title: '净空巡视' }
     },
     {
-      path: 'complex-table',
+      path: 'complex-table1',
       component: () => import('@/views/table/complex-table'),
       name: 'ComplexTable',
       meta: { title: '巡场路线' }
     },
     {
-      path: 'complex-table',
+      path: 'complex-table2',
       component: () => import('@/views/table/complex-table'),
       name: 'ComplexTable',
       meta: { title: '巡查车辆' }
     },
     {
-      path: 'complex-table',
+      path: 'complex-table3',
       component: () => import('@/views/table/complex-table'),
       name: 'ComplexTable',
       meta: { title: '驱鸟设备' }

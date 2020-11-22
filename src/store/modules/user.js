@@ -54,9 +54,9 @@ const actions = {
         const { data } = response
         commit('SET_TOKEN', data.accountId)
         setToken(data.token)
-        console.log('-----------------------------------------111111')
+        // console.log('-----------------------------------------111111')
         // console.log(Base64.decode(data.token))
-        console.log('+++++++++++++++++++++++++++++++++++++++++++++++')
+        // console.log('+++++++++++++++++++++++++++++++++++++++++++++++')
         resolve()
       }).catch(error => {
         reject(error)

@@ -21,9 +21,9 @@ const mydatasRouter = {
       itemKey: '99933',
       meta: { title: '正点报', itemKey: '5009' }
     }, {
-      path: 'mydataList',
+      path: 'mydataList1',
       component: () => import('@/views/mydata/mydata-table'),
-      name: 'mydataList',
+      name: 'mydataList1',
       itemId: 5009,
       itemKey: '99933',
       meta: { title: '隐患通告', itemKey: '5009' }
@@ -34,7 +34,7 @@ const mydatasRouter = {
       name: 'CreateSample',
       meta: { title: 'Create Data' },
       hidden: true
-    },
+    }
   ]
 }
 
