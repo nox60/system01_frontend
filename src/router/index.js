@@ -258,13 +258,13 @@ export const asyncRoutes = [
         path: 'create',
         component: () => import('@/views/example/list'),
         name: 'CreateArticle',
-        meta: { title: '机票预定'}
+        meta: { title: '机票预定' }
       },
       {
         path: 'edit/:id(\\d+)',
         component: () => import('@/views/example/list'),
         name: 'EditArticle',
-        meta: { title: '旅客订单',  noCache: true, activeMenu: '/example/list' }
+        meta: { title: '旅客订单', noCache: true, activeMenu: '/example/list' }
       }
     ]
   },
@@ -293,8 +293,6 @@ export const asyncRoutes = [
       }
     ]
   },
-
-
   {
     path: '/theme',
     component: Layout,

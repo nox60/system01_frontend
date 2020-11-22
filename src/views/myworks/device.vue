@@ -189,7 +189,8 @@ export default {
       listDeviceData(this.listQuery).then(response => {
         this.list = response.data.dataLists
         this.total = response.data.totalCounts
-        console.log(this.list)
+        // console.log(this.list)
+        console.log('请求结果 : ', this.list)
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
@@ -261,7 +262,7 @@ export default {
       this.$refs['DeviceForm'].validate((valid) => {
         if (valid) {
           this.listLoading = true
-          console.log(this.DeviceForm)
+          // console.log(this.DeviceForm)
           addOrUpdateDevice(this.DeviceForm).then(() => {
             this.$notify({
               title: 'Success',

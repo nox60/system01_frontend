@@ -42,7 +42,8 @@
       </el-table-column>
       <el-table-column label="危险评级" min-width="150px">
         <template slot-scope="{row}">
-          <el-rate v-model="row.level" :allow-half="true" disabled text-color="#ff9900" />
+<!--          <el-rate v-model="row.level" :allow-half="true" disabled text-color="#ff9900" />-->
+          <span>{{ row.level }}级</span>
         </template>
       </el-table-column>
       <el-table-column label="捕获时间" min-width="150px">
@@ -107,7 +108,18 @@
           <el-date-picker v-model="FodForm.fodTime" type="datetime" placeholder="选择时间" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" />
         </el-form-item>
         <el-form-item label="危险评级" prop="level">
-          <el-rate v-model="FodForm.level" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="5" style="margin-top:8px;" />
+          <el-select v-model="FodForm.level" style="width: 140px" class="filter-item">
+            <el-option key="1" label="1级" value="1" />
+            <el-option key="2" label="2级" value="2" />
+            <el-option key="3" label="3级" value="3" />
+            <el-option key="4" label="4级" value="4" />
+            <el-option key="5" label="5级" value="5" />
+            <el-option key="6" label="6级" value="6" />
+            <el-option key="7" label="7级" value="7" />
+            <el-option key="8" label="8级" value="8" />
+            <el-option key="9" label="9级" value="9" />
+          </el-select>
+
         </el-form-item>
 
       </el-form>
@@ -157,7 +169,7 @@ export default {
         fodAddress: '',
         roleIds: [],
         accountId: 2,
-        level: 0,
+        level: '1',
         fodTime: ''
       },
       dialogStatus: '',

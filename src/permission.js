@@ -12,15 +12,16 @@ const whiteList = ['/login', '/auth-redirect', '/active-user'] // no redirect wh
 
 router.beforeEach(async(to, from, next) => {
   // start progress bar
+  console.log('请求开始。。。。。。。。。。。。。。。。。。。。。。。。。。。。')
   NProgress.start()
 
   // set page title
   document.title = getPageTitle(to.meta.title)
 
   // determine whether the user has logged in
-  const hasToken = getToken()
-  console.log(hasToken)
-  if (hasToken) {
+  const tokenStr = getToken()
+  // console.log(tokenStr)
+  if (tokenStr) {
     // console.log('........................')
     if (to.path === '/login') {
       // if is logged in, redirect to the home page
@@ -76,4 +77,5 @@ router.beforeEach(async(to, from, next) => {
 router.afterEach(() => {
   // finish progress bar
   NProgress.done()
+  console.log('请求结束。。。。。。。。。。。。。。。。。。。。。。。。。。。')
 })
