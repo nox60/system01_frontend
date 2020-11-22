@@ -15,7 +15,7 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column label="巡视编号" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+      <el-table-column label="巡视编号" prop="id" align="center" width="80">
         <template slot-scope="{row}">
           <span>{{ row.patrolId }}</span>
         </template>
@@ -68,6 +68,7 @@
         ref="PatrolForm"
         :model="PatrolForm"
         :modal-append-to-body="true"
+        :rules="rules"
         label-width="100px"
         label-position="left"
       >
@@ -75,18 +76,21 @@
           <el-input
             v-model="PatrolForm.patrolName"
             placeholder="巡视名"
+            maxlength="30"
           />
         </el-form-item>
         <el-form-item label="巡视描述" prop="patrolBody">
           <el-input
             v-model="PatrolForm.patrolBody"
             placeholder="巡视描述"
+            maxlength="200"
           />
         </el-form-item>
         <el-form-item label="捕获地址" prop="patrolAddress">
           <el-input
             v-model="PatrolForm.patrolAddress"
             placeholder="巡视地址"
+            maxlength="100"
           />
         </el-form-item>
         <el-form-item label="捕获者" prop="accountId">
@@ -154,9 +158,7 @@
           create: 'Create'
         },
         rules: {
-          type: [{ required: true, message: 'type is required', trigger: 'change' }],
-          timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-          title: [{ required: true, message: 'title is required', trigger: 'blur' }]
+          patrolName: [{ required: true, message: '巡视名不能为空！', trigger: 'blur' }]
         },
         downloadLoading: false
       }
@@ -247,19 +249,23 @@
         return sort === `+${key}` ? 'ascending' : 'descending'
       },
       confirmAddOrUpdatePatrol() {
-        this.listLoading = true
-        console.log(this.PatrolForm)
-        addOrUpdatePatrol(this.PatrolForm).then(() => {
-          this.$notify({
-            title: 'Success',
-            message: '操作成功',
-            type: 'success',
-            duration: 2000
-          })
-          this.$refs['PatrolForm'].resetFields()
-          this.listLoading = false
-          this.dialogVisible = false
-          this.reload()
+        this.$refs['PatrolForm'].validate((valid) => {
+          if (valid) {
+            this.listLoading = true
+            console.log(this.PatrolForm)
+            addOrUpdatePatrol(this.PatrolForm).then(() => {
+              this.$notify({
+                title: 'Success',
+                message: '操作成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.$refs['PatrolForm'].resetFields()
+              this.listLoading = false
+              this.dialogVisible = false
+              this.reload()
+            })
+          }
         })
       }
     }

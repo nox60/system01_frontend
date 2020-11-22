@@ -15,7 +15,7 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column label="外来物编号" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+      <el-table-column label="外来物编号" prop="id" align="center" width="100">
         <template slot-scope="{row}">
           <span>{{ row.fodId }}</span>
         </template>
@@ -73,6 +73,7 @@
         ref="FodForm"
         :model="FodForm"
         :modal-append-to-body="true"
+        :rules="rules"
         label-width="100px"
         label-position="left"
       >
@@ -80,18 +81,21 @@
           <el-input
             v-model="FodForm.fodName"
             placeholder="外来物名"
+            maxlength="30"
           />
         </el-form-item>
         <el-form-item label="外来物描述" prop="fodBody">
           <el-input
             v-model="FodForm.fodBody"
             placeholder="外来物描述"
+            maxlength="230"
           />
         </el-form-item>
         <el-form-item label="捕获地址" prop="fodAddress">
           <el-input
             v-model="FodForm.fodAddress"
             placeholder="外来物地址"
+            maxlength="100"
           />
         </el-form-item>
         <el-form-item label="捕获者" prop="accountId">
@@ -163,9 +167,7 @@ export default {
         create: 'Create'
       },
       rules: {
-        type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        title: [{ required: true, message: 'title is required', trigger: 'blur' }]
+        fodName: [{ required: true, message: '外来物名称不能为空！', trigger: 'blur' }]
       },
       downloadLoading: false
     }
@@ -256,19 +258,23 @@ export default {
       return sort === `+${key}` ? 'ascending' : 'descending'
     },
     confirmAddOrUpdateFod() {
-      this.listLoading = true
-      console.log(this.FodForm)
-      addOrUpdateFod(this.FodForm).then(() => {
-        this.$notify({
-          title: 'Success',
-          message: '操作成功',
-          type: 'success',
-          duration: 2000
-        })
-        this.$refs['FodForm'].resetFields()
-        this.listLoading = false
-        this.dialogVisible = false
-        this.reload()
+      this.$refs['FodForm'].validate((valid) => {
+        if (valid) {
+          this.listLoading = true
+          console.log(this.FodForm)
+          addOrUpdateFod(this.FodForm).then(() => {
+            this.$notify({
+              title: 'Success',
+              message: '操作成功',
+              type: 'success',
+              duration: 2000
+            })
+            this.$refs['FodForm'].resetFields()
+            this.listLoading = false
+            this.dialogVisible = false
+            this.reload()
+          })
+        }
       })
     }
   }

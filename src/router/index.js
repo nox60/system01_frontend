@@ -98,7 +98,7 @@ export const constantRoutes = [
       {
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
-        name: 'Dashboard',
+        name: '系统中心',
         meta: { title: '系统中心', icon: 'dashboard', affix: true, accessCode: 1000 }
       }
     ]
@@ -162,7 +162,7 @@ export const asyncRoutes = [
     name: 'Permission',
     meta: {
       accessCode: 1000,
-      title: '主页',
+      title: '系统中心',
       icon: 'lock',
       roles: ['admin', 'editor'] // you can set roles in root nav
     },
@@ -170,7 +170,7 @@ export const asyncRoutes = [
       {
         path: 'users',
         component: () => import('@/views/dashboard/admin'),
-        name: 'Dashboard',
+        name: '系统中心',
         meta: {
           accessCode: 1001,
           title: '系统中心',

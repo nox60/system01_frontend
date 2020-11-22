@@ -8,7 +8,7 @@ const componentsRouter = {
   redirect: 'noRedirect',
   name: 'ComponentDemo',
   meta: {
-    title: '我的工作',
+    title: '工作管理',
     icon: 'component'
   },
   children: [

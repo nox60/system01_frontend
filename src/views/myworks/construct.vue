@@ -15,7 +15,7 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column label="施工编号" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+      <el-table-column label="施工编号" prop="id" align="center" width="80">
         <template slot-scope="{row}">
           <span>{{ row.constructId }}</span>
         </template>
@@ -68,6 +68,7 @@
         ref="ConstructForm"
         :model="ConstructForm"
         :modal-append-to-body="true"
+        :rules="rules"
         label-width="100px"
         label-position="left"
       >
@@ -75,18 +76,21 @@
           <el-input
             v-model="ConstructForm.constructName"
             placeholder="施工计划名"
+            maxlength="30"
           />
         </el-form-item>
         <el-form-item label="施工计划描述" prop="constructBody">
           <el-input
             v-model="ConstructForm.constructBody"
             placeholder="施工计划描述"
+            maxlength="200"
           />
         </el-form-item>
         <el-form-item label="施工地址" prop="constructAddress">
           <el-input
             v-model="ConstructForm.constructAddress"
             placeholder="施工计划地址"
+            maxlength="100"
           />
         </el-form-item>
         <el-form-item label="负责人" prop="accountId">
@@ -154,9 +158,7 @@ export default {
         create: 'Create'
       },
       rules: {
-        type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        title: [{ required: true, message: 'title is required', trigger: 'blur' }]
+        constructName: [{ required: true, message: '施工计划名不能为空！', trigger: 'blur' }]
       },
       downloadLoading: false
     }
@@ -247,19 +249,23 @@ export default {
       return sort === `+${key}` ? 'ascending' : 'descending'
     },
     confirmAddOrUpdateConstruct() {
-      this.listLoading = true
-      console.log(this.ConstructForm)
-      addOrUpdateConstruct(this.ConstructForm).then(() => {
-        this.$notify({
-          title: 'Success',
-          message: '操作成功',
-          type: 'success',
-          duration: 2000
-        })
-        this.$refs['ConstructForm'].resetFields()
-        this.listLoading = false
-        this.dialogVisible = false
-        this.reload()
+      this.$refs['ConstructForm'].validate((valid) => {
+        if (valid) {
+          this.listLoading = true
+          console.log(this.ConstructForm)
+          addOrUpdateConstruct(this.ConstructForm).then(() => {
+            this.$notify({
+              title: 'Success',
+              message: '操作成功',
+              type: 'success',
+              duration: 2000
+            })
+            this.$refs['ConstructForm'].resetFields()
+            this.listLoading = false
+            this.dialogVisible = false
+            this.reload()
+          })
+        }
       })
     }
   }
