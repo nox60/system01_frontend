@@ -61,6 +61,8 @@
     <el-dialog
       :title="forEdit==='1'?'编辑排班':'添加排班'"
       :visible.sync="dialogVisible"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
       @close="handleClose"
     >
       <el-form

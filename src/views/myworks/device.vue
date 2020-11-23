@@ -66,6 +66,8 @@
     <el-dialog
       :title="forEdit==='1'?'编辑设备':'添加设备'"
       :visible.sync="dialogVisible"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
       @close="handleClose"
     >
       <el-form

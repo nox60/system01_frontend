@@ -27,6 +27,8 @@
     <el-dialog
       :visible.sync="dialogVisible"
       :title="dialogType==='edit'?'Edit Role':'New Role'"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
       @close="handleClose"
     >
       <el-form

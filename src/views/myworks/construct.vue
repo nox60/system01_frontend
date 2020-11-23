@@ -61,6 +61,8 @@
     <el-dialog
       :title="forEdit==='1'?'编辑施工计划':'添加施工计划'"
       :visible.sync="dialogVisible"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
       @close="handleClose"
     >
       <el-form

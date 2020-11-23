@@ -34,6 +34,8 @@
     <el-dialog
       :title="dialogType==='edit'?'Edit Role':'New Role'"
       :visible.sync="dialogVisible"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
       @close="handleClose"
     >
 

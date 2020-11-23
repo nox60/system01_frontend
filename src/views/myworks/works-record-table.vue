@@ -56,6 +56,8 @@
     <el-dialog
       :title="forEdit==='1'?'编辑记录':'添加记录'"
       :visible.sync="dialogVisible"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
       @close="handleClose"
     >
       <el-form
