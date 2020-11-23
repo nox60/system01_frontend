@@ -20,7 +20,7 @@
           <span>{{ row.patrolId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="捕获时间" width="150px" align="center">
+      <el-table-column label="巡视时间" width="150px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.createTime | parseTime('{y}-{m}-{d}') }}</span>
         </template>
@@ -30,7 +30,7 @@
           <span>{{ row.patrolName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="捕获地址" min-width="150px">
+      <el-table-column label="巡视地址" min-width="150px">
         <template slot-scope="{row}">
           <span>{{ row.patrolAddress }}</span>
         </template>
@@ -40,7 +40,7 @@
           <span>{{ row.patrolBody }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="捕获时间" min-width="150px">
+      <el-table-column label="巡视时间" min-width="150px">
         <template slot-scope="{row}">
           <span>{{ row.patrolTime }}</span>
         </template>
@@ -88,19 +88,19 @@
             maxlength="200"
           />
         </el-form-item>
-        <el-form-item label="捕获地址" prop="patrolAddress">
+        <el-form-item label="巡视地址" prop="patrolAddress">
           <el-input
             v-model="PatrolForm.patrolAddress"
             placeholder="巡视地址"
             maxlength="100"
           />
         </el-form-item>
-        <el-form-item label="捕获者" prop="accountId">
+        <el-form-item label="巡视者" prop="accountId">
           <el-select v-model="PatrolForm.accountId" style="width: 140px" class="filter-item">
             <el-option v-for="user in usersList" :key="user.accountId" :label="user.realName" :value="user.accountId" />
           </el-select>
         </el-form-item>
-        <el-form-item label="捕获时间" prop="patrolTime">
+        <el-form-item label="巡视时间" prop="patrolTime">
           <el-date-picker v-model="PatrolForm.patrolTime" type="datetime" placeholder="选择时间" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" />
         </el-form-item>
       </el-form>

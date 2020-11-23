@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleAddOrEditFod({ fodId: 0})">
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" :disabled="listLoading" @click="handleAddOrEditFod({ fodId: 0})">
         新建外来物
       </el-button>
     </div>
@@ -42,7 +42,6 @@
       </el-table-column>
       <el-table-column label="危险评级" min-width="150px">
         <template slot-scope="{row}">
-<!--          <el-rate v-model="row.level" :allow-half="true" disabled text-color="#ff9900" />-->
           <span>{{ row.level }}级</span>
         </template>
       </el-table-column>
