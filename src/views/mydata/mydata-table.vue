@@ -15,7 +15,7 @@
         搜索
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleAdd">
-          新建
+        新建
       </el-button>
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         导出
@@ -50,18 +50,11 @@
           <span>{{ row.itemTitle }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="类型" width="110px" align="center" :formatter="formatType">
-
-      </el-table-column>
-
       <el-table-column label="星级" align="center" width="95">
-        <template slot-scope="scope" >
+        <template slot-scope="scope">
           <!-- <el-rate v-model="scope.row.evaValue" :allow-half="true"  disabled show-score text-color="#ff9900" score-template="{value}"></el-rate> -->
-          <el-rate v-model="scope.row.itemStar" :allow-half="true"  disabled text-color="#ff9900"></el-rate>
+          <el-rate v-model="scope.row.itemStar" :allow-half="true"  disabled text-color="#ff9900"/>
         </template>
-      </el-table-column>
-      <el-table-column label="状态" class-name="status-col" width="100" :formatter="statusType">
-
       </el-table-column>
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">

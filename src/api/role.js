@@ -33,14 +33,14 @@ export function updateRole(id, data) {
 export function getFunctions(id) {
   return request({
     url: `/getFunctions/${id}`,
-    method: 'get',
+    method: 'get'
   })
 }
 
 export function getNodes(id) {
   return request({
     url: `/getNodes/${id}`,
-    method: 'get',
+    method: 'get'
   })
 }
 
@@ -70,7 +70,7 @@ export function addOrUpdateFunctionItem(data) {
 export function getFunctionById(id) {
   return request({
     url: `/getFunctionById/${id}`,
-    method: 'get',
+    method: 'get'
   })
 }
 
@@ -100,14 +100,14 @@ export function deleteRole(id) {
 export function getRoleById(id) {
   return request({
     url: `/getRoleById/${id}`,
-    method: 'get',
+    method: 'get'
   })
 }
 
 export function getAllFuncs() {
   return request({
     url: `/pid/0`,
-    method: 'get',
+    method: 'get'
   })
 }
 
@@ -121,6 +121,6 @@ export function deleteFunctionItem(id) {
 export function getFunctionItemById(id) {
   return request({
     url: `/getFunctionItemById/${id}`,
-    method: 'get',
+    method: 'get'
   })
 }
