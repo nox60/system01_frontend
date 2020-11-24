@@ -165,7 +165,6 @@ export default {
         type: undefined,
         sort: '+id'
       },
-
       listLoading: false,
       dialogVisible: false,
       role: Object.assign({}, defaultRole),
@@ -196,30 +195,6 @@ export default {
         }, 1.5 * 1000)
       })
     },
-    // handleClickNode (currentObj, treeStatus) {
-    //   // 用于：父子节点严格互不关联时，父节点勾选变化时通知子节点同步变化，实现单向关联。
-    //   let selected = treeStatus.checkedKeys.indexOf(currentObj.id) // -1未选
-    //   if (selected !== -1) {
-    //     // 子节点只要被选中父节点就被选中
-    //     this.selectedParent(currentObj)
-    //     // 统一处理子节点为相同的勾选状态
-    //     // this.uniteChildSame(currentObj, true)
-    //   } else {
-    //     // 未选中 处理子节点全部未选中
-    //     if (currentObj.children != null && currentObj.children.length !== 0) {
-    //       this.uniteChildSame(currentObj, false)
-    //     }
-    //   }
-    // },
-    // uniteChildSame (treeList, isSelected) {
-    //   this.$refs.treeForm.setChecked(treeList.id, isSelected)
-    //   if (treeList.children) {
-    //     for (let i = 0; i < treeList.children.length; i++) {
-    //       this.uniteChildSame(treeList.children[i], isSelected)
-    //     }
-    //   }
-    // },
-
     // 用于懒加载表内数据
     getFunctions(tree, treeNode, resolve) {
       this.listLoading = true
@@ -232,20 +207,6 @@ export default {
         }, 1000)
       })
     },
-    // https://blog.csdn.net/qq_41612675/article/details/86612840
-    // 横排样式
-
-    // 统一处理父节点为选中
-    // selectedParent (currentObj) {
-    //   console.log('父节点被选中')
-    //   let currentNode = this.$refs.treeForm.getNode(currentObj)
-    //
-    //   if (currentNode.parent.key !== undefined) {
-    //     this.$refs.treeForm.setChecked(currentNode.parent, true)
-    //     this.selectedParent(currentNode.parent)
-    //   }
-    // },
-
     // 新增OR修改菜单中获取树的下级节点数据
     getTreeNodes(node, resolve) {
       getFunctions(node.data.id).then(response => {
