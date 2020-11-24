@@ -238,7 +238,7 @@ export default {
     formatType(row, column) {
       return typeValuesArray[row['itemType']].typeName
     },
-    statusType(row){
+    statusType(row) {
       return statusOptions[row['itemStatus']].statusName
     },
     handleFilter() {
