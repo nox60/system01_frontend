@@ -53,7 +53,7 @@
       <el-table-column label="星级" align="center" width="95">
         <template slot-scope="scope">
           <!-- <el-rate v-model="scope.row.evaValue" :allow-half="true"  disabled show-score text-color="#ff9900" score-template="{value}"></el-rate> -->
-          <el-rate v-model="scope.row.itemStar" :allow-half="true"  disabled text-color="#ff9900"/>
+          <el-rate v-model="scope.row.itemStar" :allow-half="true" disabled text-color="#ff9900" />
         </template>
       </el-table-column>
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
@@ -125,8 +125,7 @@ import { getSampleData, deleteItem } from '@/api/data-list'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
-import store from "@/store"; // secondary package based on el-pagination
-
+import store from '@/store' // secondary package based on el-pagination
 
 const typeValuesArray = [
   { typeValue: 0, typeName: '数据' },
@@ -136,7 +135,7 @@ const typeValuesArray = [
   { typeValue: 4, typeName: '测试数据1' },
   { typeValue: 5, typeName: '测试数据2' },
   { typeValue: 6, typeName: '测试数据3' },
-  { typeValue: 7, typeName: '测试数据4' },
+  { typeValue: 7, typeName: '测试数据4' }
 ]
 
 const statusOptions = [
@@ -157,7 +156,7 @@ export default {
         deleted: 'danger'
       }
       return statusMap[status]
-    },
+    }
   },
   data() {
     return {
@@ -187,7 +186,7 @@ export default {
         itemType: 0,
         itemStatus: 'published',
         itemStar: 0,
-        itemContent: '',
+        itemContent: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -287,13 +286,13 @@ export default {
       })
     },
     handleAdd() {
-      let editUrl = '/mydatas/createOrEdit/0'
-      this.$router.push({path:editUrl})
+      const editUrl = '/mydatas/createOrEdit/0'
+      this.$router.push({ path: editUrl })
     },
 
     handleUpdate(row) {
-      let editUrl = '/mydatas/createOrEdit/'+row['itemId']
-      this.$router.push({path:editUrl})
+      const editUrl = '/mydatas/createOrEdit/' + row['itemId']
+      this.$router.push({ path: editUrl })
     },
 
     handleDeleteConfirm(row) {
@@ -311,9 +310,8 @@ export default {
             })
             this.getList()
           })
-          done();
         })
-        .catch(_ => {});
+        .catch(_ => {})
     },
     handleDownload() {
       this.downloadLoading = true
