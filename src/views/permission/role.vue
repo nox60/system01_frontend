@@ -104,7 +104,7 @@
                   size="mini"
                   @change="checked=>handleSelectItem(checked, itemObj)"
                 >
-                  {{ itemObj.itemId }}
+                  {{ itemObj.itemName }}
                 </el-checkbox>
               </template>
             </el-table-column>

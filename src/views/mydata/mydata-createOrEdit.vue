@@ -61,7 +61,7 @@ const typeValuesArray = [
 ]
 
 export default {
-  name: 'createItem',
+  name: 'CreateItem',
   components: { Tinymce, MDinput, Upload, Sticky },
   props: {
     isEdit: {

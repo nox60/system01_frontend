@@ -13,7 +13,7 @@
         mode="vertical"
       >
 
-        <sidebar-item v-for="route in permission_routes" :key="route.path" :item="route" :base-path="route.path" />
+        <sidebar-item v-for="route in permission_routes" :key="route.path" :item="route" :base-path="route.path" :user-menus="userMenusa" />
 
       </el-menu>
     </el-scrollbar>
@@ -52,10 +52,16 @@ export default {
       return !this.sidebar.opened
     }
   },
+  data() {
+    return {
+      // 此处要请求服务器后端，并解析用户的菜单配置，以此来对菜单项进行渲染
+      userMenusa: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+    }
+  },
   created() {
     const test = this.$store.state.permission.routes
-    console.log(test)
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!..........................................')
+    console.log('hello test', test)
+    console.log('')
   }
 }
 </script>

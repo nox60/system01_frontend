@@ -54,6 +54,10 @@ export default {
     accessCode: {
       type: Number,
       default: 9900
+    },
+    userMenus: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -63,12 +67,12 @@ export default {
     // const userMenus = this.$store.getters.menus
     this.onlyOneChild = null
     return {
-      userMenus: ''
+      // userMenus: ''
     }
   },
   created() {
-    this.userMenus = this.$store.getters.menus
-    console.log('userMenus', this.userMenus)
+    // this.userMenus = this.$store.getters.menus
+    console.log('userMenus --- 请求菜单', this.userMenus)
   },
   methods: {
     hasOneShowingChild(children = [], parent) {
