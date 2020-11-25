@@ -28,6 +28,12 @@ import variables from '@/styles/variables.scss'
 
 export default {
   components: { SidebarItem, Logo },
+  data() {
+    return {
+      // 此处要请求服务器后端，并解析用户的菜单配置，以此来对菜单项进行渲染
+      userMenusa: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+    }
+  },
   computed: {
     ...mapGetters([
       'permission_routes',
@@ -50,12 +56,6 @@ export default {
     },
     isCollapse() {
       return !this.sidebar.opened
-    }
-  },
-  data() {
-    return {
-      // 此处要请求服务器后端，并解析用户的菜单配置，以此来对菜单项进行渲染
-      userMenusa: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
     }
   },
   created() {
