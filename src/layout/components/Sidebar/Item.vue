@@ -29,18 +29,9 @@ export default {
         vnodes.push(<svg-icon icon-class={icon}/>)
       }
     }
-
-    // console.log('------------------------------')
-    // console.log(context.props)
-    // console.log('----------====================')
-
     if (title) {
       vnodes.push(<span slot='title'>{(title)} </span>)
     }
-
-    // if (itemKey) {
-    //   vnodes.push(<span slot='itemKey'>{(itemKey)} </span>)
-    // }
     return vnodes
   }
 }
