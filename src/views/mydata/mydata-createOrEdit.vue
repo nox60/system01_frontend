@@ -114,13 +114,12 @@ export default {
     }
   },
   created() {
-    let itemId = this.$route.params.itemId
+    const itemId = this.$route.params.itemId
 
-    //如果itemId == -1 代表是新增，反之则是更新
+    // 如果itemId == -1 代表是新增，反之则是更新
     if (itemId > -1) {
       this.itemForm.itemId = itemId
       this.fetchData(itemId)
-
     }
 
     // Why need to make a copy of this.$route here?
@@ -157,13 +156,13 @@ export default {
             })
 
             // 调用全局挂载的方法,关闭当前标签页
-            //this.$store.dispatch("tagsView/delView", 'mydata-createOrEdit');
+            // this.$store.dispatch("tagsView/delView", 'mydata-createOrEdit');
 
             // // 返回上一步路由，返回上一个标签页
             // this.$router.go(-1);
             //
-            //跳转回到列表界面
-            this.$router.push({path:'/mydatas/mydataList/'})
+            // 跳转回到列表界面
+            this.$router.push({ path: '/mydatas/mydataList/' })
           })
         }
       })
