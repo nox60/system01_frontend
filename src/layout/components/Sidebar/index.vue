@@ -31,7 +31,7 @@ export default {
   data() {
     return {
       // 此处要请求服务器后端，并解析用户的菜单配置，以此来对菜单项进行渲染
-      userMenusa: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      userMenusa: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1111'
     }
   },
   computed: {
