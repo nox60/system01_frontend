@@ -15,6 +15,7 @@
         <!-- 一级菜单 -->
         <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title + 'eeeee' + userMenus" :access-code="item.meta && item.meta.accessCode" />
       </template>
+      <!-- 二级子菜单 -->
       <sidebar-item
         v-for="child in item.children"
         :key="child.path"
@@ -22,6 +23,7 @@
         :item="child"
         :base-path="resolvePath(child.path)"
         class="nest-menu"
+        :user-menus="userMenus"
       />
     </el-submenu>
   </div>
