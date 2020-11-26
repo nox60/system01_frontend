@@ -62,7 +62,7 @@ const typeValuesArray = [
 
 export default {
   name: 'CreateItem',
-  components: { Tinymce, MDinput, Upload, Sticky },
+  components: { Tinymce, MDinput },
   props: {
     isEdit: {
       type: Boolean,
@@ -86,7 +86,7 @@ export default {
         itemId: -1,
         itemTitle: '',
         itemType: 0,
-        itemContent: '',
+        itemContent: ''
       },
       disableSubmit: false,
       typeValuesArray,
@@ -94,8 +94,8 @@ export default {
       userListOptions: [],
       rules: {
         itemTitle: [
-          {required:true, message:'please input', trigger:'blur'},
-          {min:2, max:100, message:'长度2-100', trigger: 'blur'}
+          { required: true, message: 'please input', trigger: 'blur' },
+          { min: 2, max: 100, message: '长度2-100', trigger: 'blur' }
         ],
         image_uri: [{ validator: validateRequire }],
       },
