@@ -95,7 +95,7 @@ export default {
           { required: true, message: 'please input', trigger: 'blur' },
           { min: 2, max: 100, message: '长度2-100', trigger: 'blur' }
         ],
-        image_uri: [{ validator: validateRequire }],
+        image_uri: [{ validator: validateRequire }]
       },
       tempRoute: {}
     }
@@ -114,7 +114,6 @@ export default {
     }
   },
   created() {
-
     let itemId = this.$route.params.itemId
 
     //如果itemId == -1 代表是新增，反之则是更新
