@@ -91,8 +91,10 @@ const actions = {
       getInfo().then(response => {
         const { data } = response
 
+        // console.log('-------------------------------- get info')
         // const xtokenrep = response.headers['x-token-rep']
-
+        // console.log('response     ======  ', getToken())
+        // const tokenStr = getToken()
         // console.log('xtokenrep:     ------------       ', xtokenrep)
 
         if (!data) {
