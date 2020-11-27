@@ -25,6 +25,7 @@ import { mapGetters } from 'vuex'
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
+import store from '@/store'
 
 export default {
   components: { SidebarItem, Logo },
@@ -60,8 +61,17 @@ export default {
   },
   created() {
     const test = this.$store.state.permission.routes
+    this.getUserInfo()
     console.log('hello test', test)
     console.log('')
+  },
+  methods: {
+    getUserInfo() {
+      const { roles, name } = store.dispatch('user/getInfo')
+      console.log('name', name)
+      console.log('roles', roles)
+      console.log('')
+    }
   }
 }
 </script>

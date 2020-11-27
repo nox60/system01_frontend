@@ -54,9 +54,6 @@ const actions = {
         const { data } = response
         commit('SET_TOKEN', data.accountId)
         setToken(data.token)
-        // console.log('-----------------------------------------111111')
-        // console.log(Base64.decode(data.token))
-        // console.log('+++++++++++++++++++++++++++++++++++++++++++++++')
         resolve()
       }).catch(error => {
         reject(error)
@@ -68,9 +65,7 @@ const actions = {
     // console.log('-------------------- write into store')
 
     console.log(token)
-
     const resultaa = jwt.decode(token)
-
     console.log(resultaa.sub)
 
     const parsedJson = JSON.parse(resultaa.sub)
@@ -90,15 +85,19 @@ const actions = {
   },
   // get user info
   getInfo({ commit, state }) {
-    console.log('------------------------999999999999999999999999999999')
+    // console.log('------------------------999999999999999999999999999999')
+    // 使用存储在cookie 中的token获取用户信息
     return new Promise((resolve, reject) => {
       getInfo().then(response => {
         const { data } = response
 
+        // const xtokenrep = response.headers['x-token-rep']
+
+        // console.log('xtokenrep:     ------------       ', xtokenrep)
+
         if (!data) {
           reject('Verification failed, please Login again.')
         }
-
         const { roles, name, avatar, introduction } = data
 
         // roles must be a non-empty array
@@ -116,7 +115,6 @@ const actions = {
       })
     })
   },
-
   // user logout
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
