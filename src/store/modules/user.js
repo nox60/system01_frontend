@@ -89,13 +89,16 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo().then(response => {
         const { data } = response
-
         // console.log('-------------------------------- get info')
         // const xtokenrep = response.headers['x-token-rep']
         // console.log('response     ======  ', getToken())
-        // const tokenStr = getToken()
-        // console.log('xtokenrep:     ------------       ', xtokenrep)
-
+        const tokenStr = getToken()
+        // console.log('xtokenrep:     ------------       ', tokenStr)
+        const resultaa = jwt.decode(tokenStr)
+        // console.log(resultaa.sub)
+        //
+        const parsedJson = JSON.parse(resultaa.sub)
+        console.log('parsed json............', parsedJson)
         if (!data) {
           reject('Verification failed, please Login again.')
         }
@@ -110,6 +113,8 @@ const actions = {
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         commit('SET_INTRODUCTION', introduction)
+        commit('SET_MENUS', parsedJson.menuItems)
+
         resolve(data)
       }).catch(error => {
         reject(error)
