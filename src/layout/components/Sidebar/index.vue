@@ -62,9 +62,9 @@ export default {
     }
   },
   created() {
-    const test = this.$store.state.permission.routes
+    // const test = this.$store.state.permission.routes
     this.getUserInfo()
-    console.log('hello test', test)
+    console.log('hello test menus ...... ', this.$store.getters.menus)
     console.log('')
   },
   methods: {
