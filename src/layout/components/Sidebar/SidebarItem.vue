@@ -74,8 +74,8 @@ export default {
     }
   },
   created() {
-    // this.userMenus = this.$store.getters.menus
-    console.log('userMenus --- 请求菜单', this.userMenus)
+    const auserMenus = this.$store.getters.menus
+    console.log('userMenus --- 请求菜单', auserMenus)
   },
   methods: {
     hasOneShowingChild(children = [], parent) {
