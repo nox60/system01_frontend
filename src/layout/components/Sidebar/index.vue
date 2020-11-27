@@ -26,8 +26,8 @@ import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
-const jwt = require('jsonwebtoken')
+// import { getToken } from '@/utils/auth'
+// const jwt = require('jsonwebtoken')
 
 export default {
   components: { SidebarItem, Logo },
@@ -69,19 +69,19 @@ export default {
   },
   methods: {
     getUserInfo() {
-      const { roles, name } = store.dispatch('user/getInfo')
-      // 获取token并解析
-      const token = getToken()
-      console.log(token)
-      const resultaa = jwt.decode(token)
-      console.log(resultaa.sub)
-
-      const parsedJson = JSON.parse(resultaa.sub)
-      console.log('parsed json............', parsedJson)
-
-      console.log('name', name)
-      console.log('roles', roles)
-      console.log('')
+      store.dispatch('user/getInfo')
+      // // 获取token并解析
+      // const token = getToken()
+      // console.log(token)
+      // const resultaa = jwt.decode(token)
+      // console.log(resultaa.sub)
+      //
+      // const parsedJson = JSON.parse(resultaa.sub)
+      // console.log('parsed json............', parsedJson)
+      //
+      // console.log('name', name)
+      // console.log('roles', roles)
+      // console.log('')
     }
   }
 }

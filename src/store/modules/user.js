@@ -64,12 +64,12 @@ const actions = {
     // Write vuex
     // console.log('-------------------- write into store')
 
-    console.log(token)
+    // console.log(token)
     const resultaa = jwt.decode(token)
-    console.log(resultaa.sub)
+    // console.log(resultaa.sub)
 
     const parsedJson = JSON.parse(resultaa.sub)
-    console.log('parsed json............', parsedJson)
+    // console.log('parsed json............', parsedJson)
     // console.log(">>>>>---")
     // console.log(parsedJson)
     // console.log(parsedJson.MenuItems)
@@ -80,7 +80,6 @@ const actions = {
     commit('SET_TOKEN', token)
     commit('SET_USER_STATUS', parsedJson.userStatus)
     commit('SET_USER_TYPE', parsedJson.userType)
-
     setToken(token)
   },
   // get user info
