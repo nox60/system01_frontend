@@ -1,11 +1,11 @@
 <template>
   <!-- 和用户权限点进行匹配比对，具有权限点则显示 v-if="abc && abc.indexOf('a') != -1"  -->
   <!-- <div v-if="!item.hidden && item.meta && this.userMenus.indexOf('|'+item.meta.accessCode+'|') != -1 "> -->
-  <div v-if="!item.hidden && item.meta ">
+  <div v-if="!item.hidden && item.meta && userMenuItems.indexOf('|'+item.meta.accessCode+'|') != -1">
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-          <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title + 'sssss' + userMenus" :access-code="item.meta && item.meta.accessCode" />
+          <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title" :access-code="item.meta && item.meta.accessCode" />
         </el-menu-item>
       </app-link>
     </template>
@@ -13,7 +13,7 @@
     <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
       <template slot="title">
         <!-- 一级菜单 -->
-        <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title + 'eeeee' + userMenus" :access-code="item.meta && item.meta.accessCode" />
+        <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" :access-code="item.meta && item.meta.accessCode" />
       </template>
       <!-- 二级子菜单 -->
       <sidebar-item
@@ -74,8 +74,8 @@ export default {
     }
   },
   created() {
-    const auserMenus = this.$store.getters.menus
-    console.log('userMenus --- 请求菜单', auserMenus)
+    const userMenuItems = this.$store.getters.menus
+    console.log('userMenus --- 请求菜单', userMenuItems)
   },
   methods: {
     hasOneShowingChild(children = [], parent) {
