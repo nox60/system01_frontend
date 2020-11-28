@@ -169,7 +169,7 @@ export const asyncRoutes = [
   {
     path: '/SystemManage',
     component: Layout,
-    redirect: '/SystemManage/page',
+    redirect: '/permission/page',
     alwaysShow: true, // will always show the root menu
     name: 'SystemManage',
     meta: {
