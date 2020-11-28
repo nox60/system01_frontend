@@ -98,12 +98,16 @@
 <!--        <el-button v-if="forLogin == 0" :span="8" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleActiveUser">激活用户</el-button>-->
 <!--        <el-button v-if="forLogin == 0" :span="8" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleActiveUser">取消返回</el-button>-->
 <!--      </el-form-item>-->
-      <el-row>
-        <el-col :span="24">
-          <el-button v-if="forLogin == 1" :span="24" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
-          <el-button v-if="forLogin == 0" :span="8" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleActiveUser">激活用户</el-button>
-          <el-button v-if="forLogin == 0" :span="8" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleActiveUser">取消返回</el-button>
-        </el-col>
+      <el-row :gutter="20">
+          <el-col :span="24">
+            <el-button v-if="forLogin == 0" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
+          </el-col>
+          <el-col :span="12">
+            <el-button v-if="forLogin == 1" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleActiveUser">激活用户</el-button>
+          </el-col>
+          <el-col :span="12">
+            <el-button v-if="forLogin == 1" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleActiveUser">取消返回</el-button>
+          </el-col>
       </el-row>
     </el-form>
 
