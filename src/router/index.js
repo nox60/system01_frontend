@@ -91,19 +91,6 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [
-      {
-        path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
-        name: '系统中心',
-        meta: { title: '系统中心', icon: 'dashboard', affix: true, accessCode: 1000 }
-      }
-    ]
-  },
-  {
     path: '/3001',
     component: () => import('@/views/mydata/mydata-createOrEdit'),
     hidden: false
@@ -162,7 +149,7 @@ export const asyncRoutes = [
     name: 'Permission',
     meta: {
       accessCode: 1000,
-      title: '系统中心',
+      title: '系统中心22',
       icon: 'lock',
       roles: ['admin', 'editor'] // you can set roles in root nav
     },
@@ -173,18 +160,18 @@ export const asyncRoutes = [
         name: '系统中心',
         meta: {
           accessCode: 1001,
-          title: '系统中心',
+          title: '系统中心2',
           roles: ['admin']
         }
       }
     ]
   },
   {
-    path: '/permission',
+    path: '/SystemManage',
     component: Layout,
-    redirect: '/permission/page',
+    redirect: '/SystemManage/page',
     alwaysShow: true, // will always show the root menu
-    name: 'Permission',
+    name: 'SystemManage',
     meta: {
       accessCode: 1000,
       title: '系统管理',

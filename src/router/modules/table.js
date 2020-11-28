@@ -33,19 +33,19 @@ const tableRouter = {
     {
       path: 'complex-table1',
       component: () => import('@/views/table/complex-table'),
-      name: 'ComplexTable',
+      name: 'ComplexTable1',
       meta: { title: '巡场路线' }
     },
     {
       path: 'complex-table2',
       component: () => import('@/views/table/complex-table'),
-      name: 'ComplexTable',
+      name: 'ComplexTable2',
       meta: { title: '巡查车辆' }
     },
     {
       path: 'complex-table3',
       component: () => import('@/views/table/complex-table'),
-      name: 'ComplexTable',
+      name: 'ComplexTable3',
       meta: { title: '驱鸟设备' }
     }
   ]
