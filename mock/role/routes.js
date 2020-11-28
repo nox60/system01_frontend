@@ -32,19 +32,19 @@ const constantRoutes = [
     component: 'views/error-page/401',
     hidden: true
   },
-  {
-    path: '',
-    component: 'layout/Layout',
-    redirect: 'dashboard',
-    children: [
-      {
-        path: 'dashboard',
-        component: 'views/dashboard/index',
-        name: 'Dashboard',
-        meta: { title: '系统中心', icon: 'dashboard', affix: true }
-      }
-    ]
-  },
+  // {
+  //   path: '',
+  //   component: 'layout/Layout',
+  //   redirect: 'dashboard',
+  //   children: [
+  //     {
+  //       path: 'dashboard',
+  //       component: 'views/dashboard/index',
+  //       name: 'Dashboard',
+  //       meta: { title: '系统中心', icon: 'dashboard', affix: true }
+  //     }
+  //   ]
+  // },
   {
     path: '/documentation',
     component: 'layout/Layout',
