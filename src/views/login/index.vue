@@ -142,7 +142,16 @@ export default {
     // }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        callback(new Error('密码长度不能低于6位！'))
+      } else {
+        callback()
+      }
+    }
+    const validatePassword2 = (rule, value, callback) => {
+      if (value.length < 6) {
+        callback(new Error('密码长度不能低于6位！'))
+      } else if (value !== this.loginForm.activePassword) {
+        callback(new Error('两次输入密码不一致!'));
       } else {
         callback()
       }
@@ -157,7 +166,9 @@ export default {
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur' }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+        activePassword: [{ required: true, trigger: 'blur', validator: validatePassword }],
+        activePassword2: [{ required: true, trigger: 'blur', validator: validatePassword2 }]
       },
       passwordType: 'password',
       capsTooltip: false,
