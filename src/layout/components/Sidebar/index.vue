@@ -33,8 +33,6 @@ export default {
   components: { SidebarItem, Logo },
   data() {
     return {
-      // 此处要请求服务器后端，并解析用户的菜单配置，以此来对菜单项进行渲染
-      // userMenusa: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1111'
     }
   },
   computed: {
@@ -62,26 +60,11 @@ export default {
     }
   },
   created() {
-    // const test = this.$store.state.permission.routes
     this.getUserInfo()
-    console.log('hello test menus ...... ', this.$store.getters.menus)
-    console.log('')
   },
   methods: {
     getUserInfo() {
       store.dispatch('user/getInfo')
-      // // 获取token并解析
-      // const token = getToken()
-      // console.log(token)
-      // const resultaa = jwt.decode(token)
-      // console.log(resultaa.sub)
-      //
-      // const parsedJson = JSON.parse(resultaa.sub)
-      // console.log('parsed json............', parsedJson)
-      //
-      // console.log('name', name)
-      // console.log('roles', roles)
-      // console.log('')
     }
   }
 }
