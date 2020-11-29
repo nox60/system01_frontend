@@ -23,7 +23,6 @@
         :item="child"
         :base-path="resolvePath(child.path)"
         class="nest-menu"
-        :user-menus="userMenus"
       />
     </el-submenu>
   </div>
@@ -57,11 +56,12 @@ export default {
     accessCode: {
       type: Number,
       default: 9900
-    },
-    userMenus: {
-      type: String,
-      default: ''
     }
+    // ,
+    // userMenus: {
+    //   type: String,
+    //   default: ''
+    // }
   },
   data() {
     // To fix https://github.com/PanJiaChen/vue-admin-template/issues/237

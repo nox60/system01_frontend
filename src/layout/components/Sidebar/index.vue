@@ -13,7 +13,7 @@
         mode="vertical"
       >
 
-        <sidebar-item v-for="route in permission_routes" :key="route.path" :item="route" :base-path="route.path" :user-menus="userMenusa" />
+        <sidebar-item v-for="route in permission_routes" :key="route.path" :item="route" :base-path="route.path" />
 
       </el-menu>
     </el-scrollbar>
@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       // 此处要请求服务器后端，并解析用户的菜单配置，以此来对菜单项进行渲染
-      userMenusa: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1111'
+      // userMenusa: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1111'
     }
   },
   computed: {
