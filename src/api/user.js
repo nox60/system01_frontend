@@ -33,6 +33,14 @@ export function checkLogin(data) {
   })
 }
 
+export function activeUser(data) {
+  return request({
+    url: '/activeUser',
+    method: 'post',
+    data: data
+  })
+}
+
 export function login(data) {
   return request({
     url: '/checkLogin',

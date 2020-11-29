@@ -93,21 +93,16 @@
           </span>
         </el-form-item>
       </el-tooltip>
-<!--      <el-form-item>-->
-<!--        <el-button v-if="forLogin == 1" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>-->
-<!--        <el-button v-if="forLogin == 0" :span="8" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleActiveUser">激活用户</el-button>-->
-<!--        <el-button v-if="forLogin == 0" :span="8" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleActiveUser">取消返回</el-button>-->
-<!--      </el-form-item>-->
       <el-row :gutter="20">
-          <el-col :span="24">
-            <el-button v-if="forLogin == 1" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
-          </el-col>
-          <el-col :span="12">
-            <el-button v-if="forLogin == 0" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleActiveUser">激活用户</el-button>
-          </el-col>
-          <el-col :span="12">
-            <el-button v-if="forLogin == 0" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleActiveUser">取消返回</el-button>
-          </el-col>
+        <el-col :span="24">
+          <el-button v-if="forLogin == 1" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
+        </el-col>
+        <el-col :span="12">
+          <el-button v-if="forLogin == 0" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleActiveUser">激活用户</el-button>
+        </el-col>
+        <el-col :span="12">
+          <el-button v-if="forLogin == 0" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleActiveUser">取消返回</el-button>
+        </el-col>
       </el-row>
     </el-form>
 
@@ -124,7 +119,7 @@
 <script>
 // import { validUsername } from '@/utils/validate'
 import SocialSign from './components/SocialSignin'
-import { checkLogin } from '@/api/user'
+import { checkLogin, activeUser } from '@/api/user'
 import { Message } from 'element-ui'
 // import { Base64 } from 'js-base64'
 var jwt = require('jsonwebtoken')
@@ -151,7 +146,7 @@ export default {
       if (value.length < 6) {
         callback(new Error('密码长度不能低于6位！'))
       } else if (value !== this.loginForm.activePassword) {
-        callback(new Error('两次输入密码不一致!'));
+        callback(new Error('两次输入密码不一致!'))
       } else {
         callback()
       }
@@ -283,32 +278,34 @@ export default {
           // 登录判断逻辑
           new Promise((resolve, reject) => {
             // 这里的checkLogin没写对，是应该用token去看用户的token是否过期，后面再重构。
-            checkLogin(this.loginForm)
+            activeUser(this.loginForm)
               .then(res => {
-                if (res.data.code === 100) {
-                  const parsedToken = jwt.decode(res.token)
-                  const parsedJson = JSON.parse(parsedToken.sub)
-                  // 进行判断，如果用户状态为0(未激活状态)，则要求用户重新登录。
-                  if (parsedJson.userStatus === 0) {
-                    this.loading = false
-                    this.$confirm('你的账户需要激活才能使用！')
-                      .then(_ => {
-                        this.$router.push({ path: '/active-user' })
-                      })
-                      .catch(_ => {})
-                  } else {
-                    this.$store.dispatch('user/loginInfo', res.token)
-                      .then(() => {
-                        console.log('otherQuery', this.otherQuery, '|', 'redirect', this.redirect)
-                        this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-                        this.loading = false
-                      })
-                      .catch(() => {
-                        this.loading = false
-                      })
-                  }
+                console.log('active result ..... ', res.data)
+                if (res.data.code === 20000) {
+
+                  // const parsedToken = jwt.decode(res.token)
+                  // const parsedJson = JSON.parse(parsedToken.sub)
+                  // // 进行判断，如果用户状态为0(未激活状态)，则要求用户重新登录。
+                  // if (parsedJson.userStatus === 0) {
+                  //   this.loading = false
+                  //   this.$confirm('你的账户需要激活才能使用！')
+                  //     .then(_ => {
+                  //       this.$router.push({ path: '/active-user' })
+                  //     })
+                  //     .catch(_ => {})
+                  // } else {
+                  //   this.$store.dispatch('user/loginInfo', res.token)
+                  //     .then(() => {
+                  //       console.log('otherQuery', this.otherQuery, '|', 'redirect', this.redirect)
+                  //       this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+                  //       this.loading = false
+                  //     })
+                  //     .catch(() => {
+                  //       this.loading = false
+                  //     })
+                  // }
                 } else {
-                  console.log('login failed')
+                  console.log('激活用户失败')
                   Message({
                     message: res.data.msg || 'Error',
                     type: 'error',
