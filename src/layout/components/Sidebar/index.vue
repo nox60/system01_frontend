@@ -60,6 +60,7 @@ export default {
     }
   },
   created() {
+    // 每次页面创建都需要进行用户信息的刷新，重新获取权限点，以免因为vuex在刷新之后数据丢失
     this.getUserInfo()
   },
   methods: {
