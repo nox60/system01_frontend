@@ -57,6 +57,7 @@ service.interceptors.response.use(
       // })
 
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
+      // 当用户没有登录需要弹出窗口提示，而且要给与该提示框最高急别的zindex，保证其再其他提示框上层
       if (res.code === 11000) {
         // to re-login
         MessageBox.alert(res.msg, '重新登录', {
@@ -102,3 +103,4 @@ service.interceptors.response.use(
 )
 
 export default service
+
