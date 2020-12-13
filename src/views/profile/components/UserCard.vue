@@ -1,10 +1,4 @@
 <template>
-  <el-card style="margin-bottom:20px;">
-    <div slot="header" class="clearfix">
-      <span>About me</span>
-    </div>
-
-  </el-card>
 </template>
 
 <script>
