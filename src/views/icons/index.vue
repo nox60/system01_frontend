@@ -1,10 +1,5 @@
 <template>
-  <div class="icons-container">
-    <aside>
-      <a href="https://panjiachen.github.io/vue-element-admin-site/guide/advanced/icon.html" target="_blank">Add and use
-      </a>
-    </aside>
-  </div>
+
 </template>
 
 <script>
