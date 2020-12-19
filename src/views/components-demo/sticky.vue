@@ -2,20 +2,6 @@
   <div>
     <sticky :z-index="10" class-name="sub-navbar">
 
-
-      <el-dropdown trigger="click">
-        <el-button plain>
-          Link<i class="el-icon-caret-bottom el-icon--right" />
-        </el-button>
-        <el-dropdown-menu slot="dropdown" class="no-padding no-border" style="width:300px">
-          <el-input v-model="url" placeholder="Please enter the content">
-            <template slot="prepend">
-              Url
-            </template>
-          </el-input>
-        </el-dropdown-menu>
-      </el-dropdown>
-
       <div class="time-container">
         <el-date-picker v-model="time" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Release time" />
       </div>
