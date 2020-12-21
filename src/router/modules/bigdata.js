@@ -8,22 +8,41 @@ const chartsRouter = {
   redirect: 'noRedirect',
   name: 'Bigdatas',
   meta: {
-    title: '大数据分析',
+    title: '大数据运输指标分析',
     icon: 'chart'
   },
   children: [
     {
       path: 'bigdata1',
-      component: () => import('@/views/charts/bigdata1'),
+      component: () => import('@/views/bigdata/bigdata1'),
       name: 'bigdata1',
-      meta: { title: '大数据表1', noCache: true }
+      meta: { title: '旅客运输量', noCache: true }
     },
     {
       path: 'bigdata2',
-      component: () => import('@/views/charts/bigdata2'),
+      component: () => import('@/views/bigdata/bigdata2'),
       name: 'bigdata2',
-      meta: { title: '大数据表2', noCache: true }
+      meta: { title: '旅客周转量', noCache: true }
+    },
+    {
+      path: 'bigdata2',
+      component: () => import('@/views/bigdata/bigdata2'),
+      name: 'bigdata2',
+      meta: { title: '货邮运输量', noCache: true }
+    },
+    {
+      path: 'bigdata2',
+      component: () => import('@/views/bigdata/bigdata2'),
+      name: 'bigdata2',
+      meta: { title: '货邮周转量', noCache: true }
+    },
+    {
+      path: 'bigdata2',
+      component: () => import('@/views/bigdata/bigdata2'),
+      name: 'bigdata2',
+      meta: { title: '运输周转量', noCache: true }
     }
+
   ]
 }
 
