@@ -10,6 +10,8 @@ import Layout from '@/layout'
 import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
 import bigdataRouter from './modules/bigdata'
+import bigdata2Router from './modules/bigdata2'
+import bigdata3Router from './modules/bigdata3'
 import tableRouter from './modules/table'
 // import nestedRouter from './modules/nested'
 import mydatasRouter from './modules/mydata'
@@ -242,6 +244,8 @@ export const asyncRoutes = [
   /** when your routing map is too long, you can split it into small modules **/
   componentsRouter,
   bigdataRouter,
+  bigdata2Router,
+  bigdata3Router,
   chartsRouter,
   tableRouter,
   mydatasRouter,

@@ -44,17 +44,10 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
-      const xData = (function() {
-        const data = []
-        for (let i = 1; i < 13; i++) {
-          data.push(i + 'month')
-        }
-        return data
-      }())
       this.chart.setOption({
         backgroundColor: '#344b58',
         title: {
-          text: 'statistics',
+          text: '旅客周转量(xxxxxxxxxxxxxxxxxx)',
           x: '20',
           top: '20',
           textStyle: {
@@ -90,7 +83,7 @@ export default {
           textStyle: {
             color: '#90979c'
           },
-          data: ['female', 'male', 'average']
+          data: ['旅客周转量', '同比增长']
         },
         calculable: true,
         xAxis: [{
@@ -111,9 +104,8 @@ export default {
           },
           axisLabel: {
             interval: 0
-
           },
-          data: xData
+          data: ["2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016"]
         }],
         yAxis: [{
           type: 'value',
@@ -162,7 +154,7 @@ export default {
           end: 35
         }],
         series: [{
-          name: 'female',
+          name: '旅客周转量',
           type: 'bar',
           stack: 'total',
           barMaxWidth: 35,
@@ -183,54 +175,22 @@ export default {
             }
           },
           data: [
-            709,
-            1917,
-            2455,
-            2610,
-            1719,
-            1433,
-            1544,
-            3285,
-            5208,
-            3372,
-            2484,
-            4078
+            20449288,
+            23706600,
+            27917258,
+            28827993,
+            33752354,
+            40389960,
+            45369629,
+            50257366,
+            56567596,
+            63341903,
+            72825513,
+            83781348
           ]
         },
-
         {
-          name: 'male',
-          type: 'bar',
-          stack: 'total',
-          itemStyle: {
-            normal: {
-              color: 'rgba(0,191,183,1)',
-              barBorderRadius: 0,
-              label: {
-                show: true,
-                position: 'top',
-                formatter(p) {
-                  return p.value > 0 ? p.value : ''
-                }
-              }
-            }
-          },
-          data: [
-            327,
-            1776,
-            507,
-            1200,
-            800,
-            482,
-            204,
-            1390,
-            1001,
-            951,
-            381,
-            220
-          ]
-        }, {
-          name: 'average',
+          name: '同比增长',
           type: 'line',
           stack: 'total',
           symbolSize: 10,
@@ -243,24 +203,24 @@ export default {
                 show: true,
                 position: 'top',
                 formatter(p) {
-                  return p.value > 0 ? p.value : ''
+                  return p.value > 0 ? p.value+'%' : ''
                 }
               }
             }
           },
           data: [
-            1036,
-            3693,
-            2962,
-            3810,
-            2519,
-            1915,
-            1748,
-            4675,
-            6209,
-            4323,
-            2865,
-            4298
+            0,
+            15.93,
+            17.76,
+            3.26,
+            17.08,
+            19.67,
+            12.33,
+            10.77,
+            12.56,
+            11.98,
+            14.97,
+            15.04
           ]
         }
         ]
