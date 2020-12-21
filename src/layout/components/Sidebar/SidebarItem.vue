@@ -1,8 +1,9 @@
 <template>
   <!-- 和用户权限点进行匹配比对，具有权限点则显示 v-if="abc && abc.indexOf('a') != -1"  -->
   <!-- <div v-if="!item.hidden && item.meta && this.userMenus.indexOf('|'+item.meta.accessCode+'|') != -1 "> -->
-  <div v-if="!item.hidden && item.meta && this.userAllMenus.indexOf('|'+item.meta.accessCode+'|') != -1">
-    <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
+<!--  <div v-if="!item.hidden && item.meta && this.userAllMenus.indexOf('|'+item.meta.accessCode+'|') != -1">-->
+  <div v-if="!item.hidden && item.meta">
+  <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
           <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title" :access-code="item.meta && item.meta.accessCode" />

@@ -9,6 +9,7 @@ import Layout from '@/layout'
 /* Router Modules https://www.hangge.com/blog/cache/detail_2120.html */
 import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
+import bigdataRouter from './modules/bigdata'
 import tableRouter from './modules/table'
 // import nestedRouter from './modules/nested'
 import mydatasRouter from './modules/mydata'
@@ -240,6 +241,7 @@ export const asyncRoutes = [
 
   /** when your routing map is too long, you can split it into small modules **/
   componentsRouter,
+  bigdataRouter,
   chartsRouter,
   tableRouter,
   mydatasRouter,
