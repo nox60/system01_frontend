@@ -3,7 +3,7 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">DRP TEST CASES</h3>
+        <h3 class="title">机场数据分析大数据平台</h3>
       </div>
 
       <el-form-item prop="username">
@@ -400,7 +400,7 @@ $light_gray:#eee;
   width: 100%;
   /*background-color: $bg;*/
   overflow: hidden;
-  background: url('../../assets/u1.png');
+  background: url('../../assets/u2.jpg');
 
   .login-form {
     position: relative;

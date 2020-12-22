@@ -3,10 +3,10 @@
 import Layout from '@/layout'
 
 const chartsRouter = {
-  path: '/bigdata',
+  path: '/bigdata3',
   component: Layout,
   redirect: 'noRedirect',
-  name: 'Bigdatas',
+  name: 'Bigdata3s',
   meta: {
     title: '航空公司运输指标',
     icon: 'chart'
