@@ -1,5 +1,5 @@
 module.exports = {
-  title: '机场运行系统',
+  title: '通航大数据平台',
 
   /**
    * @type {boolean} true | false
