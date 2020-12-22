@@ -47,7 +47,7 @@ export default {
       this.chart.setOption({
         backgroundColor: '#344b58',
         title: {
-          text: '旅客周转量(xxxxxxxxxxxxxxxxxx)',
+          text: '旅客周转量',
           x: '20',
           top: '20',
           textStyle: {

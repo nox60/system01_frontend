@@ -47,7 +47,7 @@ export default {
       this.chart.setOption({
         backgroundColor: '#344b58',
         title: {
-          text: '货邮运输量(xxxxxxxxxxxxxxxxxx)',
+          text: '货邮运输量',
           x: '20',
           top: '20',
           textStyle: {

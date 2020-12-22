@@ -47,7 +47,7 @@ export default {
       this.chart.setOption({
         backgroundColor: '#344b58',
         title: {
-          text: '起降架次(xxxxxxxxxxxxxxxxxx)',
+          text: '起降架次',
           x: '20',
           top: '20',
           textStyle: {

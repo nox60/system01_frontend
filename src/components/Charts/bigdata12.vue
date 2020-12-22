@@ -47,7 +47,7 @@ export default {
       this.chart.setOption({
         backgroundColor: '#344b58',
         title: {
-          text: '飞行小时(xxxxxxxxxxxxxxxxxx)',
+          text: '飞行小时',
           x: '20',
           top: '20',
           textStyle: {

@@ -47,7 +47,7 @@ export default {
       this.chart.setOption({
         backgroundColor: '#344b58',
         title: {
-          text: '运输总周转量(xxxxxxxxxxxxxxxxxx)',
+          text: '运输总周转量',
           x: '20',
           top: '20',
           textStyle: {
