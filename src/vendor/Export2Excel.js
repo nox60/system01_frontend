@@ -351,16 +351,3 @@ function sheet_from_array_of_arrays(data, opts) {
   return ws;
 }
 
-function Workbook() {
-  if (!(this instanceof Workbook)) return new Workbook();
-  this.SheetNames = [];
-  this.Sheets = {};
-}
-
-function s2ab(s) {
-  var buf = new ArrayBuffer(s.length);
-  var view = new Uint8Array(buf);
-  for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
-  return buf;
-}
-
